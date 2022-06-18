@@ -6,15 +6,16 @@ using UnityEngine;
 
 /// <summary>
 /// フィールド情報を保持する。
-/// x, y 座標のいずれかが偶数の場合：ライン又は空白
-/// x, y 座標のいずれも奇数の場合：占有又は空白
+/// x, y 座標のいずれかが偶数の場合：ライン又は非ライン
+/// x, y 座標のいずれも奇数の場合：占有又は非占有
 /// </summary>
 public class Field
 {
     EnumBlockType[,] _field;
     /// <summary>
-    /// .: 空白
+    /// .: 非占有
     /// $: 占有
+    /// o: 非ライン
     /// #: ライン
     /// </summary>
     /// <param name="source">フィールドを示す文字列</param>
@@ -41,7 +42,7 @@ public class Field
                 _field[x, y] = dic[lines[y][x]];
                 if(x % 2 == 1 && y % 2 == 1)
                 {
-                    // このエリアは空白又は占有のはず
+                    // このエリアは非占有又は占有のはず
                     if(_field[x,y] == EnumBlockType.OnLine || _field[x, y] == EnumBlockType.NoLine)
                     {
                         Debug.LogError($"({x}, {y}) must be Occupied or FreeArea");
@@ -50,7 +51,7 @@ public class Field
                 }
                 else
                 {
-                    // このエリアは空白又はラインのはず
+                    // このエリアは非占有又はラインのはず
                     if (_field[x, y] == EnumBlockType.OccupiedArea || _field[x, y] == EnumBlockType.FreeArea)
                     {
                         Debug.LogError($"({x}, {y}) must be OnLine or NoLine");

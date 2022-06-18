@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Edge
@@ -180,6 +182,57 @@ public class Edge
             }
         }
     }
+
+    /// <summary>
+    /// .: 空白
+    /// +: 非占有領域内のライン
+    /// *: 占有領域と非占有領域の境にあるライン
+    /// #: 占有領域内のライン
+    /// </summary>
+    /// <param name="source">フィールドを示す文字列</param>
+    public Edge(string source)
+    {
+        source = source.Trim().Replace("\r", "\n").Replace("\n\n", "\n");
+        Dictionary<char, EnumEdgeType> dic = new Dictionary<char, EnumEdgeType>();
+        dic['.'] = EnumEdgeType.None;
+        dic['+'] = EnumEdgeType.Line;
+        dic['*'] = EnumEdgeType.Edge;
+        dic['#'] = EnumEdgeType.Filled;
+        string[] lines = source.Split('\n');
+        if (lines.Any(s => s.Length != lines[0].Length))
+        {
+            // 全てのラインは同じ長さでなければならない
+            Debug.LogError($"All length of lines must be same!\n{source}\n{string.Join(',', lines.Select(s => $"{s.Length}"))}");
+            throw new ArgumentException();
+        }
+        _edge = new EnumEdgeType[lines[0].Length, lines.Length];
+        for (int y = 0; y < lines.Length; y++)
+        {
+            for (int x = 0; x < lines[y].Length; x++)
+            {
+                _edge[x, y] = dic[lines[y][x]];
+                if (x % 2 == 1 && y % 2 == 1)
+                {
+                    // このエリアは空白のはず
+                    if (_edge[x, y] != EnumEdgeType.None)
+                    {
+                        Debug.LogError($"({x}, {y}) must be None");
+                        throw new ArgumentException();
+                    }
+                }
+                if (x == 0 || x == lines[0].Length - 1 || y == 0 || y == lines.Length - 1)
+                {
+                    // ライン
+                    if (_edge[x, y] == EnumEdgeType.None)
+                    {
+                        Debug.LogError($"({x}, {y}) must be any line");
+                        throw new ArgumentException();
+                    }
+                }
+            }
+        }
+    }
+
     /// <summary>
     /// フィールド高さ
     /// フィールド上のy座標が偶数の時にラインが設置されているので、フィールド高さは必ず奇数となる
@@ -200,6 +253,16 @@ public class Edge
         return _edge.GetLength(0);
     }
 
+    /// <summary>
+    /// 指定された座標におけるエッジの種別を返す
+    /// </summary>
+    /// <param name="x">x座標</param>
+    /// <param name="y">y座標</param>
+    /// <returns>エッジの種別</returns>
+    public EnumEdgeType EdgeType(int x, int y)
+    {
+        return _edge[x, y]; 
+    }
     public string DebugEdge()
     {
         string ret = "";
