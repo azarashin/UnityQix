@@ -11,8 +11,8 @@ public class TestAreaCalculator
     /// 面積計算
     /// </summary>
     /// <returns></returns>
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses000()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses000()
     {
         Field field = new Field(@"
 #######
@@ -23,15 +23,14 @@ public class TestAreaCalculator
 ");
         AreaCalculator calc = new AreaCalculator();
         Assert.AreEqual(6, calc.NumberOfAllPoints(field)); 
-        yield return null;
     }
 
     /// <summary>
     /// 占有面積計算
     /// </summary>
     /// <returns></returns>
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses001()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses001()
     {
         Field field = new Field(@"
 #######
@@ -43,15 +42,14 @@ public class TestAreaCalculator
         AreaCalculator calc = new AreaCalculator();
         Assert.AreEqual(6, calc.NumberOfAllPoints(field));
         Assert.AreEqual(4, calc.NumberOfOccupiedPoints(field));
-        yield return null;
     }
 
     /// <summary>
     /// 占有判定
     /// </summary>
     /// <returns></returns>
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses002()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses002()
     {
         string src = @"
 #######
@@ -74,15 +72,14 @@ public class TestAreaCalculator
         Assert.AreEqual(6, calc.NumberOfAllPoints(field));
         Assert.AreEqual(0, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
-        yield return null;
     }
 
     /// <summary>
     /// 占有判定
     /// </summary>
     /// <returns></returns>
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses003()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses003()
     {
         string src = @"
 #######
@@ -105,15 +102,14 @@ public class TestAreaCalculator
         Assert.AreEqual(6, calc.NumberOfAllPoints(field));
         Assert.AreEqual(5, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
-        yield return null;
     }
 
     /// <summary>
     /// 占有判定
     /// </summary>
     /// <returns></returns>
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses004()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses004()
     {
         string src = @"
 #######
@@ -136,15 +132,14 @@ public class TestAreaCalculator
         Assert.AreEqual(6, calc.NumberOfAllPoints(field));
         Assert.AreEqual(1, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
-        yield return null;
     }
 
     /// <summary>
     /// 占有判定(中マップ)
     /// </summary>
     /// <returns></returns>
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses005()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses005()
     {
         string src = @"
 ###########
@@ -179,14 +174,13 @@ public class TestAreaCalculator
         Assert.AreEqual(25, calc.NumberOfAllPoints(field));
         Assert.AreEqual(13, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
-        yield return null;
     }
     /// <summary>
     /// 占有判定(中マップ)
     /// </summary>
     /// <returns></returns>
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses006()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses006()
     {
         string src = @"
 ###########
@@ -221,15 +215,14 @@ public class TestAreaCalculator
         Assert.AreEqual(25, calc.NumberOfAllPoints(field));
         Assert.AreEqual(13, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
-        yield return null;
     }
 
     /// <summary>
     /// 占有判定(中マップ)
     /// </summary>
     /// <returns></returns>
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses007()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses007()
     {
         string src = @"
 ###########
@@ -264,15 +257,14 @@ public class TestAreaCalculator
         Assert.AreEqual(25, calc.NumberOfAllPoints(field));
         Assert.AreEqual(12, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
-        yield return null;
     }
 
     /// <summary>
     /// 占有判定(中マップ)
     /// </summary>
     /// <returns></returns>
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses008()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses008()
     {
         string src = @"
 ###########
@@ -307,15 +299,14 @@ public class TestAreaCalculator
         Assert.AreEqual(25, calc.NumberOfAllPoints(field));
         Assert.AreEqual(12, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
-        yield return null;
     }
 
     /// <summary>
     /// 占有判定(中マップ)
     /// </summary>
     /// <returns></returns>
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses009()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses009()
     {
         string src = @"
 ###################
@@ -362,15 +353,14 @@ public class TestAreaCalculator
         Assert.AreEqual(72, calc.NumberOfAllPoints(field));
         Assert.AreEqual(29, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
-        yield return null;
     }
 
     /// <summary>
     /// 占有判定(中マップ)
     /// </summary>
     /// <returns></returns>
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses010()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses010()
     {
         string src = @"
 ###################
@@ -417,15 +407,14 @@ public class TestAreaCalculator
         Assert.AreEqual(72, calc.NumberOfAllPoints(field));
         Assert.AreEqual(29, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
-        yield return null;
     }
 
     /// <summary>
     /// 占有判定(中マップ)
     /// </summary>
     /// <returns></returns>
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses011()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses011()
     {
         string src = @"
 ###################
@@ -472,15 +461,14 @@ public class TestAreaCalculator
         Assert.AreEqual(72, calc.NumberOfAllPoints(field));
         Assert.AreEqual(43, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
-        yield return null;
     }
 
     /// <summary>
     /// 占有判定(中マップ)
     /// </summary>
     /// <returns></returns>
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses012()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses012()
     {
         string src = @"
 ###################
@@ -527,7 +515,6 @@ public class TestAreaCalculator
         Assert.AreEqual(72, calc.NumberOfAllPoints(field));
         Assert.AreEqual(43, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
-        yield return null;
     }
 
 

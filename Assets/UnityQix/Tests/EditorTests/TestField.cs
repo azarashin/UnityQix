@@ -11,8 +11,8 @@ public class TestField
     /// 最小フィールド
     /// </summary>
     /// <returns></returns>
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses000()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses000()
     {
         Field field = new Field(@"
 ###
@@ -22,12 +22,11 @@ public class TestField
         Assert.AreEqual(EnumBlockType.OnLine, field.AreaType(0, 0));
         Assert.AreEqual(EnumBlockType.FreeArea, field.AreaType(1, 1));
         Assert.AreEqual(EnumBlockType.OnLine, field.AreaType(2, 2));
-        yield return null;
     }
 
     // 不正なテストデータ(外がラインではない)
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses001()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses001()
     {
         UnityEngine.TestTools.LogAssert.ignoreFailingMessages = true;
         try
@@ -41,16 +40,15 @@ public class TestField
         }
         catch (ArgumentException)
         {
-            yield break;
+            return;
 
         }
         Assert.Fail(); // 例外を出すはずなのに出していない場合はテスト失敗
-        yield return null;
     }
 
     // 不正なテストデータ(置いてはいけないライン)
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses002()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses002()
     {
         UnityEngine.TestTools.LogAssert.ignoreFailingMessages = true;
         try
@@ -64,19 +62,18 @@ public class TestField
         }
         catch (ArgumentException)
         {
-            yield break;
+            return;
 
         }
         Assert.Fail(); // 例外を出すはずなのに出していない場合はテスト失敗
-        yield return null;
     }
 
     /// <summary>
     /// テスト用フィールド
     /// </summary>
     /// <returns></returns>
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses003()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses003()
     {
         Field field = new Field(@"
 #######
@@ -90,12 +87,11 @@ public class TestField
         Assert.AreEqual(EnumBlockType.OnLine, field.AreaType(0, 0));
         Assert.AreEqual(EnumBlockType.FreeArea, field.AreaType(1, 1));
         Assert.AreEqual(EnumBlockType.NoLine, field.AreaType(2, 2));
-        yield return null;
     }
 
     // 不正なテストデータ(置いてはいけないライン)
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses004()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses004()
     {
         UnityEngine.TestTools.LogAssert.ignoreFailingMessages = true;
         try
@@ -113,19 +109,18 @@ public class TestField
         }
         catch (ArgumentException)
         {
-            yield break;
+            return;
 
         }
         Assert.Fail(); // 例外を出すはずなのに出していない場合はテスト失敗
-        yield return null;
     }
 
     /// <summary>
     /// テスト用フィールド(正しいラインだらけ)
     /// </summary>
     /// <returns></returns>
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses005()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses005()
     {
         Field field = new Field(@"
 #######
@@ -142,15 +137,14 @@ public class TestField
         Assert.AreEqual(EnumBlockType.OnLine, field.AreaType(1, 2));
         Assert.AreEqual(EnumBlockType.OnLine, field.AreaType(2, 1));
         Assert.AreEqual(EnumBlockType.FreeArea, field.AreaType(3, 3));
-        yield return null;
     }
 
     /// <summary>
     /// 最小フィールド(中央を占有)
     /// </summary>
     /// <returns></returns>
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses006()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses006()
     {
         Field field = new Field(@"
 ###
@@ -160,12 +154,11 @@ public class TestField
         Assert.AreEqual(EnumBlockType.OnLine, field.AreaType(0, 0));
         Assert.AreEqual(EnumBlockType.OccupiedArea, field.AreaType(1, 1));
         Assert.AreEqual(EnumBlockType.OnLine, field.AreaType(2, 2));
-        yield return null;
     }
 
     // 不正なテストデータ(外が占有)
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses007()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses007()
     {
         UnityEngine.TestTools.LogAssert.ignoreFailingMessages = true;
         try
@@ -179,17 +172,16 @@ $$$
         }
         catch (ArgumentException)
         {
-            yield break;
+            return;
 
         }
         Assert.Fail(); // 例外を出すはずなのに出していない場合はテスト失敗
-        yield return null;
     }
 
 
     // 不正なテストデータ(置いてはいけない占有)
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses008()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses008()
     {
         UnityEngine.TestTools.LogAssert.ignoreFailingMessages = true;
         try
@@ -207,16 +199,15 @@ $$$
         }
         catch (ArgumentException)
         {
-            yield break;
+            return;
 
         }
         Assert.Fail(); // 例外を出すはずなのに出していない場合はテスト失敗
-        yield return null;
     }
 
     // 不正なテストデータ(置いてはいけない占有)
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses009()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses009()
     {
         UnityEngine.TestTools.LogAssert.ignoreFailingMessages = true;
         try
@@ -234,18 +225,17 @@ $$$
         }
         catch (ArgumentException)
         {
-            yield break;
+            return;
 
         }
         Assert.Fail(); // 例外を出すはずなのに出していない場合はテスト失敗
-        yield return null;
     }
     /// <summary>
     /// テスト用フィールド(全部占有)
     /// </summary>
     /// <returns></returns>
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses010()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses010()
     {
         Field field = new Field(@"
 #######
@@ -262,15 +252,14 @@ $$$
         Assert.AreEqual(EnumBlockType.NoLine, field.AreaType(1, 2));
         Assert.AreEqual(EnumBlockType.OnLine, field.AreaType(2, 1));
         Assert.AreEqual(EnumBlockType.OccupiedArea, field.AreaType(3, 3));
-        yield return null;
     }
 
     /// <summary>
     /// テスト用フィールド(幅と高さ確認)
     /// </summary>
     /// <returns></returns>
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses011()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses011()
     {
         Field field = new Field(@"
 #######
@@ -285,15 +274,14 @@ $$$
 ");
         Assert.AreEqual(7, field.Width());
         Assert.AreEqual(9, field.Height());
-        yield return null;
     }
 
     /// <summary>
     /// 空のフィールド
     /// </summary>
     /// <returns></returns>
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses012()
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses012()
     {
         int width = 5;
         int height = 7; 
@@ -327,6 +315,5 @@ $$$
 ");
         Assert.AreEqual(fieldExpected.DebugField(), field.DebugField());
 
-        yield return null;
     }
 }
