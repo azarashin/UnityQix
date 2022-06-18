@@ -11,7 +11,7 @@ using UnityEngine;
 /// </summary>
 public class Field
 {
-    EnumBlockType[,] _field; 
+    EnumBlockType[,] _field;
     /// <summary>
     /// .: 空白
     /// $: 占有
@@ -22,8 +22,9 @@ public class Field
     {
         source = source.Trim().Replace("\r", "\n").Replace("\n\n", "\n");
         Dictionary<char, EnumBlockType> dic = new Dictionary<char, EnumBlockType>();
-        dic['.'] = EnumBlockType.Free;
-        dic['$'] = EnumBlockType.Occupied;
+        dic['.'] = EnumBlockType.FreeArea;
+        dic['o'] = EnumBlockType.NoLine; 
+        dic['$'] = EnumBlockType.OccupiedArea;
         dic['#'] = EnumBlockType.OnLine;
         string[] lines = source.Split('\n');
         if(lines.Any(s => s.Length != lines[0].Length))
@@ -40,18 +41,19 @@ public class Field
                 _field[x, y] = dic[lines[y][x]];
                 if(x % 2 == 1 && y % 2 == 1)
                 {
-                    // 空白又は占有
-                    if(_field[x,y] == EnumBlockType.OnLine)
+                    // このエリアは空白又は占有のはず
+                    if(_field[x,y] == EnumBlockType.OnLine || _field[x, y] == EnumBlockType.NoLine)
                     {
-                        Debug.LogError($"({x}, {y}) must be Occupied or Free");
+                        Debug.LogError($"({x}, {y}) must be Occupied or FreeArea");
                         throw new ArgumentException();
                     }
-                } else
+                }
+                else
                 {
-                    // 空白又はライン
-                    if (_field[x, y] == EnumBlockType.Occupied)
+                    // このエリアは空白又はラインのはず
+                    if (_field[x, y] == EnumBlockType.OccupiedArea || _field[x, y] == EnumBlockType.FreeArea)
                     {
-                        Debug.LogError($"({x}, {y}) must be OnLine or Free");
+                        Debug.LogError($"({x}, {y}) must be OnLine or NoLine");
                         throw new ArgumentException();
                     }
 
@@ -67,6 +69,13 @@ public class Field
                 }
             }
         }
+    }
+
+    public EnumBlockType[,] Copy()
+    {
+        EnumBlockType[,] field = new EnumBlockType[_field.GetLength(0), _field.GetLength(1)];
+        Array.Copy(_field, field, _field.Length);
+        return field; 
     }
 
     public Field(int width, int height)
@@ -90,21 +99,32 @@ public class Field
                 if(x == 0 || y == 0 || x == width - 1 || y == height - 1)
                 {
                     _field[x, y] = EnumBlockType.OnLine;
-                } else
+                }
+                else if(x % 2 == 0 || y % 2 == 0)
                 {
-                    _field[x, y] = EnumBlockType.Free;
+                    _field[x, y] = EnumBlockType.NoLine;
+                }
+                else
+                {
+                    _field[x, y] = EnumBlockType.FreeArea;
                 }
             }
         }
     }
 
+    public Field(EnumBlockType[,] field)
+    {
+        _field = new EnumBlockType[field.GetLength(0), field.GetLength(1)];
+        Array.Copy(field, _field, field.Length);
+    }
+
     /// <summary>
-    /// フィールド上の指定された座標のブロックの種別を返す
+    /// フィールド上の指定された座標のエリアの種別を返す
     /// </summary>
     /// <param name="x">x座標</param>
     /// <param name="y">y座標</param>
-    /// <returns>ブロックの種別</returns>
-    public EnumBlockType BlockType(int x, int y)
+    /// <returns>エリアの種別</returns>
+    public EnumBlockType AreaType(int x, int y)
     {
         return _field[x, y]; 
     }
@@ -120,17 +140,6 @@ public class Field
     }
 
     /// <summary>
-    /// フィールド上の指定された座標のブロックを指定された種別に設定し直す
-    /// </summary>
-    /// <param name="type">再設定後のブロック種別</param>
-    /// <param name="x">x座標</param>
-    /// <param name="y">y座標</param>
-    public void UpdateBlock(EnumBlockType type, int x, int y)
-    {
-        _field[x, y] = type;
-    }
-
-    /// <summary>
     /// フィールド幅
     /// フィールド上のx座標が偶数の時にラインが設置されているので、フィールド幅は必ず奇数となる
     /// </summary>
@@ -138,5 +147,24 @@ public class Field
     public int Width()
     {
         return _field.GetLength(0);
+    }
+
+    public string DebugField()
+    {
+        string ret = "";
+        Dictionary<EnumBlockType, string> dic = new Dictionary<EnumBlockType, string>();
+        dic[EnumBlockType.FreeArea] = ".";
+        dic[EnumBlockType.NoLine] = "o";
+        dic[EnumBlockType.OccupiedArea] = "$";
+        dic[EnumBlockType.OnLine] = "#";
+        for (int y = 0; y < Height(); y++)
+        {
+            for (int x = 0; x < Width(); x++)
+            {
+                ret += dic[_field[x, y]];
+            }
+            ret += "\r\n"; 
+        }
+        return ret; 
     }
 }

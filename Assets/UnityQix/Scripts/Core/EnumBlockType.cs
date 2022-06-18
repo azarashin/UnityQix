@@ -7,15 +7,20 @@ public enum EnumBlockType
     /// <summary>
     /// 空白
     /// </summary>
-    Free, 
+    FreeArea, 
 
     /// <summary>
     /// ライン
     /// </summary>
-    OnLine, 
+    OnLine,
+
+    /// <summary>
+    /// ライン無し
+    /// </summary>
+    NoLine,
 
     /// <summary>
     /// 占有
     /// </summary>
-    Occupied, 
+    OccupiedArea, 
 }

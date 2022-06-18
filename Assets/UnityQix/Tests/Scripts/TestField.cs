@@ -19,9 +19,9 @@ public class TestField
 #.#
 ###
 ");
-        Assert.AreEqual(EnumBlockType.OnLine, field.BlockType(0, 0));
-        Assert.AreEqual(EnumBlockType.Free, field.BlockType(1, 1));
-        Assert.AreEqual(EnumBlockType.OnLine, field.BlockType(2, 2));
+        Assert.AreEqual(EnumBlockType.OnLine, field.AreaType(0, 0));
+        Assert.AreEqual(EnumBlockType.FreeArea, field.AreaType(1, 1));
+        Assert.AreEqual(EnumBlockType.OnLine, field.AreaType(2, 2));
         yield return null;
     }
 
@@ -80,16 +80,16 @@ public class TestField
     {
         Field field = new Field(@"
 #######
-#.....#
-#.....#
-#.....#
-#.....#
-#.....#
+#.o.o.#
+#ooooo#
+#.o.o.#
+#ooooo#
+#.o.o.#
 #######
 ");
-        Assert.AreEqual(EnumBlockType.OnLine, field.BlockType(0, 0));
-        Assert.AreEqual(EnumBlockType.Free, field.BlockType(1, 1));
-        Assert.AreEqual(EnumBlockType.Free, field.BlockType(2, 2));
+        Assert.AreEqual(EnumBlockType.OnLine, field.AreaType(0, 0));
+        Assert.AreEqual(EnumBlockType.FreeArea, field.AreaType(1, 1));
+        Assert.AreEqual(EnumBlockType.NoLine, field.AreaType(2, 2));
         yield return null;
     }
 
@@ -102,11 +102,11 @@ public class TestField
         {
             Field field = new Field(@"
 #######
-#.....#
-#.....#
-#..#..#
-#.....#
-#.....#
+#.o.o.#
+#ooooo#
+#.o#o.#
+#ooooo#
+#.o.o.#
 #######
 ");
 
@@ -136,12 +136,12 @@ public class TestField
 #.#.#.#
 #######
 ");
-        Assert.AreEqual(EnumBlockType.OnLine, field.BlockType(0, 0));
-        Assert.AreEqual(EnumBlockType.Free, field.BlockType(1, 1));
-        Assert.AreEqual(EnumBlockType.OnLine, field.BlockType(2, 2));
-        Assert.AreEqual(EnumBlockType.OnLine, field.BlockType(1, 2));
-        Assert.AreEqual(EnumBlockType.OnLine, field.BlockType(2, 1));
-        Assert.AreEqual(EnumBlockType.Free, field.BlockType(3, 3));
+        Assert.AreEqual(EnumBlockType.OnLine, field.AreaType(0, 0));
+        Assert.AreEqual(EnumBlockType.FreeArea, field.AreaType(1, 1));
+        Assert.AreEqual(EnumBlockType.OnLine, field.AreaType(2, 2));
+        Assert.AreEqual(EnumBlockType.OnLine, field.AreaType(1, 2));
+        Assert.AreEqual(EnumBlockType.OnLine, field.AreaType(2, 1));
+        Assert.AreEqual(EnumBlockType.FreeArea, field.AreaType(3, 3));
         yield return null;
     }
 
@@ -157,9 +157,9 @@ public class TestField
 #$#
 ###
 ");
-        Assert.AreEqual(EnumBlockType.OnLine, field.BlockType(0, 0));
-        Assert.AreEqual(EnumBlockType.Occupied, field.BlockType(1, 1));
-        Assert.AreEqual(EnumBlockType.OnLine, field.BlockType(2, 2));
+        Assert.AreEqual(EnumBlockType.OnLine, field.AreaType(0, 0));
+        Assert.AreEqual(EnumBlockType.OccupiedArea, field.AreaType(1, 1));
+        Assert.AreEqual(EnumBlockType.OnLine, field.AreaType(2, 2));
         yield return null;
     }
 
@@ -196,11 +196,11 @@ $$$
         {
             Field field = new Field(@"
 #######
-#.$...#
-#.....#
-#.....#
-#.....#
-#.....#
+#.$.o.#
+#ooooo#
+#.o.o.#
+#ooooo#
+#.o.o.#
 #######
 ");
 
@@ -223,11 +223,11 @@ $$$
         {
             Field field = new Field(@"
 #######
-#.....#
-#$....#
-#.....#
-#.....#
-#.....#
+#.o.o.#
+#$oooo#
+#.o.o.#
+#ooooo#
+#.o.o.#
 #######
 ");
 
@@ -249,19 +249,19 @@ $$$
     {
         Field field = new Field(@"
 #######
-#$#$.$#
-#.#####
+#$#$o$#
+#o#####
 #$#$#$#
-###.###
-#$.$.$#
+###o###
+#$o$o$#
 #######
 ");
-        Assert.AreEqual(EnumBlockType.OnLine, field.BlockType(0, 0));
-        Assert.AreEqual(EnumBlockType.Occupied, field.BlockType(1, 1));
-        Assert.AreEqual(EnumBlockType.OnLine, field.BlockType(2, 2));
-        Assert.AreEqual(EnumBlockType.Free, field.BlockType(1, 2));
-        Assert.AreEqual(EnumBlockType.OnLine, field.BlockType(2, 1));
-        Assert.AreEqual(EnumBlockType.Occupied, field.BlockType(3, 3));
+        Assert.AreEqual(EnumBlockType.OnLine, field.AreaType(0, 0));
+        Assert.AreEqual(EnumBlockType.OccupiedArea, field.AreaType(1, 1));
+        Assert.AreEqual(EnumBlockType.OnLine, field.AreaType(2, 2));
+        Assert.AreEqual(EnumBlockType.NoLine, field.AreaType(1, 2));
+        Assert.AreEqual(EnumBlockType.OnLine, field.AreaType(2, 1));
+        Assert.AreEqual(EnumBlockType.OccupiedArea, field.AreaType(3, 3));
         yield return null;
     }
 
@@ -274,13 +274,13 @@ $$$
     {
         Field field = new Field(@"
 #######
-#$#$.$#
-#.##.##
-#$#$.$#
-#.#####
+#$#$o$#
+#o##o##
+#$#$o$#
+#o#####
 #$#$#$#
-###.###
-#$.$.$#
+###o###
+#$o$o$#
 #######
 ");
         Assert.AreEqual(7, field.Width());
@@ -304,14 +304,29 @@ $$$
             {
                 if (x == 0 || y == 0 || x == width - 1 || y == height - 1)
                 {
-                    Assert.AreEqual(EnumBlockType.OnLine, field.BlockType(x, y));
+                    Assert.AreEqual(EnumBlockType.OnLine, field.AreaType(x, y));
+                }
+                else if(x % 2 == 0 || y % 2 == 0)
+                {
+                    Assert.AreEqual(EnumBlockType.NoLine, field.AreaType(x, y));
                 }
                 else
                 {
-                    Assert.AreEqual(EnumBlockType.Free, field.BlockType(x, y));
+                    Assert.AreEqual(EnumBlockType.FreeArea, field.AreaType(x, y));
                 }
             }
         }
+        Field fieldExpected = new Field(@"
+#####
+#.o.#
+#ooo#
+#.o.#
+#ooo#
+#.o.#
+#####
+");
+        Assert.AreEqual(fieldExpected.DebugField(), field.DebugField());
+
         yield return null;
     }
 }
