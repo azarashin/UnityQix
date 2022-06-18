@@ -530,57 +530,5 @@ public class TestAreaCalculator
         yield return null;
     }
 
-    /// <summary>
-    /// 縁判定
-    /// </summary>
-    /// <returns></returns>
-    [UnityTest]
-    public IEnumerator TestAreaCalculatorWithEnumeratorPasses013()
-    {
-        string src = @"
-###################
-#$o$o$o$o$o$o$o$#$#
-###################
-#.o.o.o.o.o.o.o.#$#
-###############o#o#
-#$#$o$o$o$o$#$#.#$#
-#############o#o#o#
-#$#.o.o.#.o.#$#.#$#
-#o#o###o#ooo#o#o#o#
-#$#.#$#.o.o.#$#.#$#
-#o#o###########o#o#
-#$#.#$o$#$o$o$#.#$#
-###############o#o#
-#.#.o.#.o.o.o.o.#$#
-###################
-#.#.o.#$#$o$o$o$#$#
-###################
-";
 
-        string expected = @"
-###################
-#...............#.#
-*****************##
-*...............*.#
-***************.*.#
-#.#.........#.*.*.#
-##***********.*.*.#
-#.*.....+...*.*.*.#
-#.*.***.+...*.*.*.#
-#.*.*.*.....*.*.*.#
-#.*.*#*******#*.*.#
-#.*.*...#.....*.*.#
-***+***********.*.#
-*.+...+.........*.#
-*+++++***********##
-*.+...*.#.......#.#
-*******############
-";
-        expected = expected.Trim(); 
-        Field field = new Field(src);
-        AreaCalculator calc = new AreaCalculator();
-        string edge = new Edge(field).DebugEdge().Trim();
-        Assert.AreEqual(expected, edge);
-        yield return null;
-    }
 }
