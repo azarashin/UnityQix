@@ -71,7 +71,6 @@ public class TestAreaCalculator
         Field exField = new Field(expected);
         AreaCalculator calc = new AreaCalculator();
         field = calc.UpdateField(field, new (int X, int Y)[] { (1, 1)});
-        Debug.Log(field.DebugField());
         Assert.AreEqual(6, calc.NumberOfAllPoints(field));
         Assert.AreEqual(0, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
@@ -581,8 +580,6 @@ public class TestAreaCalculator
         Field field = new Field(src);
         AreaCalculator calc = new AreaCalculator();
         string edge = new Edge(field).DebugEdge().Trim();
-        Debug.Log(edge);
-        Debug.Log(expected);
         Assert.AreEqual(expected, edge);
         yield return null;
     }
