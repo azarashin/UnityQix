@@ -284,7 +284,7 @@ $$$
     public void TestAreaCalculatorWithEnumeratorPasses012()
     {
         int width = 5;
-        int height = 7; 
+        int height = 7;
         Field field = new Field(width, height);
         for (int y = 0; y < height; y++)
         {
@@ -294,7 +294,7 @@ $$$
                 {
                     Assert.AreEqual(EnumBlockType.OnLine, field.AreaType(x, y));
                 }
-                else if(x % 2 == 0 || y % 2 == 0)
+                else if (x % 2 == 0 || y % 2 == 0)
                 {
                     Assert.AreEqual(EnumBlockType.NoLine, field.AreaType(x, y));
                 }
