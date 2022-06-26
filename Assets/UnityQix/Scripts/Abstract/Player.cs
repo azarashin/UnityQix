@@ -90,4 +90,14 @@ public abstract class Player : MonoBehaviour
 
         _onBase = true;
     }
+
+    public (int, int) Position()
+    {
+        return (_pX, _pY); 
+    }
+
+    public int Radius()
+    {
+        return 1; // プレイヤーの半径は固定
+    }
 }

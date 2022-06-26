@@ -12,8 +12,14 @@ public class TestPlayerField
         Factory factory = TestCommon.Factory();
         Player player = factory.GetPlayer(0);
         Field field = new Field(9, 9);
-        player.Setup(field, 4, 8);
         InputManagerStub input = (InputManagerStub)player.GetInput();
+        GameController controller = factory.GetGameController();
+        controller.Setup(
+            field,
+            new (int, int)[] { (4, 8) },
+            new Player[] { player },
+            new IEnemy[] { new TestEnemy(5, 5, 1) }
+            );
 
         Field expected0 = new Field(@"
 #########
