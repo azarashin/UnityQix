@@ -1,18 +1,19 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestFactory : MonoBehaviour
+public class TestFactory : Factory
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    PlayerForTest _player;
+
+    public override int GetNumberOfPlayers()
     {
-        
+        return 1;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override Player GetPlayer(int index)
     {
-        
+        return _player;
     }
 }
