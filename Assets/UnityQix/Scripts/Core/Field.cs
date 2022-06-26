@@ -24,26 +24,26 @@ public class Field
         source = source.Trim().Replace("\r", "\n").Replace("\n\n", "\n");
         Dictionary<char, EnumBlockType> dic = new Dictionary<char, EnumBlockType>();
         dic['.'] = EnumBlockType.FreeArea;
-        dic['o'] = EnumBlockType.NoLine; 
+        dic['o'] = EnumBlockType.NoLine;
         dic['$'] = EnumBlockType.OccupiedArea;
         dic['#'] = EnumBlockType.OnLine;
         string[] lines = source.Split('\n');
-        if(lines.Any(s => s.Length != lines[0].Length))
+        if (lines.Any(s => s.Length != lines[0].Length))
         {
             // 全てのラインは同じ長さでなければならない
             Debug.LogError($"All length of lines must be same!\n{source}\n{string.Join(',', lines.Select(s => $"{s.Length}"))}");
             throw new ArgumentException();
         }
-        _field = new EnumBlockType[lines[0].Length, lines.Length]; 
-        for(int y=0;y<lines.Length;y++)
+        _field = new EnumBlockType[lines[0].Length, lines.Length];
+        for (int y = 0; y < lines.Length; y++)
         {
-            for(int x=0;x<lines[y].Length;x++)
+            for (int x = 0; x < lines[y].Length; x++)
             {
                 _field[x, y] = dic[lines[y][x]];
-                if(x % 2 == 1 && y % 2 == 1)
+                if (x % 2 == 1 && y % 2 == 1)
                 {
                     // このエリアは非占有又は占有のはず
-                    if(_field[x,y] == EnumBlockType.OnLine || _field[x, y] == EnumBlockType.NoLine)
+                    if (_field[x, y] == EnumBlockType.OnLine || _field[x, y] == EnumBlockType.NoLine)
                     {
                         Debug.LogError($"({x}, {y}) must be Occupied or FreeArea");
                         throw new ArgumentException();
@@ -59,7 +59,7 @@ public class Field
                     }
 
                 }
-                if(x == 0 || x == lines[0].Length - 1 || y == 0 || y == lines.Length - 1)
+                if (x == 0 || x == lines[0].Length - 1 || y == 0 || y == lines.Length - 1)
                 {
                     // ライン
                     if (_field[x, y] != EnumBlockType.OnLine)
@@ -74,9 +74,9 @@ public class Field
 
     internal void UpdateField(EnumBlockType[,] newField)
     {
-        if(_field.GetLength(0) != newField.GetLength(0) || _field.GetLength(1) != newField.GetLength(1))
+        if (_field.GetLength(0) != newField.GetLength(0) || _field.GetLength(1) != newField.GetLength(1))
         {
-            throw new ArgumentException(); 
+            throw new ArgumentException();
         }
         Array.Copy(newField, _field, _field.Length);
     }
@@ -85,32 +85,32 @@ public class Field
     {
         EnumBlockType[,] field = new EnumBlockType[_field.GetLength(0), _field.GetLength(1)];
         Array.Copy(_field, field, _field.Length);
-        return field; 
+        return field;
     }
 
     public Field(int width, int height)
     {
-        if(width < 3 || height < 3)
+        if (width < 3 || height < 3)
         {
             Debug.LogError($"({width}, {height}) Too small field!");
             throw new ArgumentException();
         }
-        if(width % 2 == 0 || height % 2 == 0)
+        if (width % 2 == 0 || height % 2 == 0)
         {
             Debug.LogError($"({width}, {height}) Width / Height must be odd. ");
             throw new ArgumentException();
 
         }
-        _field = new EnumBlockType[width, height]; 
-        for(int y=0;y<height;y++)
+        _field = new EnumBlockType[width, height];
+        for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
-                if(x == 0 || y == 0 || x == width - 1 || y == height - 1)
+                if (x == 0 || y == 0 || x == width - 1 || y == height - 1)
                 {
                     _field[x, y] = EnumBlockType.OnLine;
                 }
-                else if(x % 2 == 0 || y % 2 == 0)
+                else if (x % 2 == 0 || y % 2 == 0)
                 {
                     _field[x, y] = EnumBlockType.NoLine;
                 }
@@ -136,7 +136,7 @@ public class Field
     /// <returns>エリアの種別</returns>
     public EnumBlockType AreaType(int x, int y)
     {
-        return _field[x, y]; 
+        return _field[x, y];
     }
 
     /// <summary>
@@ -184,8 +184,8 @@ public class Field
             {
                 ret += dic[_field[x, y]];
             }
-            ret += "\r\n"; 
+            ret += "\r\n";
         }
-        return ret; 
+        return ret;
     }
 }

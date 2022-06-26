@@ -21,7 +21,7 @@ public abstract class Player : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(CoRun()); 
+        StartCoroutine(CoRun());
     }
 
     private void Update()
@@ -32,27 +32,27 @@ public abstract class Player : MonoBehaviour
     {
         while (true)
         {
-            if(_field == null)
+            if (_field == null)
             {
                 yield return null;
-                continue; 
+                continue;
             }
-            int px2 = _pX, py2 = _pY; 
+            int px2 = _pX, py2 = _pY;
             if (_input.IsLeft())
             {
-                px2 = _pX - 2; 
+                px2 = _pX - 2;
             }
             else if (_input.IsRight())
             {
-                px2 = _pX + 2; 
+                px2 = _pX + 2;
             }
             else if (_input.IsUp())
             {
-                py2 = _pY - 2; 
+                py2 = _pY - 2;
             }
             else if (_input.IsDown())
             {
-                py2 = _pY + 2; 
+                py2 = _pY + 2;
             }
             if (_pos.IsMovable(_pX, _pY, px2, py2, _acceptToMoveOnLine))
             {
@@ -60,11 +60,12 @@ public abstract class Player : MonoBehaviour
                 _field.SetAreaType(px2, py2, EnumBlockType.OnLine);
                 _calc.UpdateField(_field, new (int, int)[] { (5, 5) });
                 _pX = px2;
-                _pY = py2; 
+                _pY = py2;
                 yield return MoveTo(_pX, _pY);
-            } else 
+            }
+            else
             {
-                yield return null; 
+                yield return null;
             }
         }
 
@@ -81,12 +82,12 @@ public abstract class Player : MonoBehaviour
         _pos = new PositionUpdater(_field);
 
         Edge edge = new Edge(_field);
-        if(edge.EdgeType(_pX, _pY) != EnumEdgeType.Edge)
+        if (edge.EdgeType(_pX, _pY) != EnumEdgeType.Edge)
         {
             Debug.LogError($"Player must be in edge({_pX}, {_pY})");
             throw new ArgumentException();
         }
 
-        _onBase = true; 
+        _onBase = true;
     }
 }

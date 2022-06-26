@@ -13,7 +13,7 @@ public class TestPlayerField
         Player player = factory.GetPlayer(0);
         Field field = new Field(9, 9);
         player.Setup(field, 4, 8);
-        InputManagerStub input = (InputManagerStub)player.GetInput(); 
+        InputManagerStub input = (InputManagerStub)player.GetInput();
 
         Field expected0 = new Field(@"
 #########
