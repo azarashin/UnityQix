@@ -72,6 +72,15 @@ public class Field
         }
     }
 
+    internal void UpdateField(EnumBlockType[,] newField)
+    {
+        if(_field.GetLength(0) != newField.GetLength(0) || _field.GetLength(1) != newField.GetLength(1))
+        {
+            throw new ArgumentException(); 
+        }
+        Array.Copy(newField, _field, _field.Length);
+    }
+
     public EnumBlockType[,] Copy()
     {
         EnumBlockType[,] field = new EnumBlockType[_field.GetLength(0), _field.GetLength(1)];
@@ -128,6 +137,17 @@ public class Field
     public EnumBlockType AreaType(int x, int y)
     {
         return _field[x, y]; 
+    }
+
+    /// <summary>
+    /// フィールドを更新する
+    /// </summary>
+    /// <param name="x">更新位置(x)</param>
+    /// <param name="y">更新位置(y)</param>
+    /// <param name="type">更新値</param>
+    public void SetAreaType(int x, int y, EnumBlockType type)
+    {
+        _field[x, y] = type;
     }
 
     /// <summary>

@@ -36,8 +36,7 @@ public class AreaCalculator
     /// </summary>
     /// <param name="field">フィールド</param>
     /// <param name="targets"></param>
-    /// <returns>更新されたフィールド。引数で渡されたfield インスタンスとは別のものが返される。</returns>
-    public Field UpdateField(Field field, (int X, int Y)[] targets)
+    public void UpdateField(Field field, (int X, int Y)[] targets)
     {
         EnumBlockType[,] newField = field.Copy();
         Field ret = null; 
@@ -50,9 +49,9 @@ public class AreaCalculator
         }
         foreach((int X, int Y) target in targets)
         {
-            ret = Fill(newField, target);
+            Fill(newField, target);
         }
-        return ret; 
+        field.UpdateField(newField);
     }
 
     /// <summary>

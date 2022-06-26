@@ -5,9 +5,14 @@ using UnityEngine;
 
 public abstract class Player : MonoBehaviour
 {
+    [SerializeField]
+    bool _acceptToMoveOnLine = false;
+
     private IInputManager _input;
     private Field _field;
-    private int _pX, _pY; 
+    AreaCalculator _calc;
+    PositionUpdater _pos;
+    private int _pX, _pY;
 
     private bool _onBase;
 
@@ -25,8 +30,13 @@ public abstract class Player : MonoBehaviour
 
     private IEnumerator CoRun()
     {
-        while(true)
+        while (true)
         {
+            if(_field == null)
+            {
+                yield return null;
+                continue; 
+            }
             int px2 = _pX, py2 = _pY; 
             if (_input.IsLeft())
             {
@@ -44,8 +54,13 @@ public abstract class Player : MonoBehaviour
             {
                 py2 = _pY + 2; 
             }
-            if((px2 != _pX || py2 != _pY) && px2 >= 0 && py2 >= 0 && px2 < _field.Width() && py2 < _field.Height())
+            if (_pos.IsMovable(_pX, _pY, px2, py2, _acceptToMoveOnLine))
             {
+                _field.SetAreaType((_pX + px2) / 2, (_pY + py2) / 2, EnumBlockType.OnLine);
+                _field.SetAreaType(px2, py2, EnumBlockType.OnLine);
+                _calc.UpdateField(_field, new (int, int)[] { (5, 5) });
+                _pX = px2;
+                _pY = py2; 
                 yield return MoveTo(_pX, _pY);
             } else 
             {
@@ -62,8 +77,9 @@ public abstract class Player : MonoBehaviour
         _field = field;
         _pX = x;
         _pY = y;
+        _calc = new AreaCalculator();
+        _pos = new PositionUpdater(_field);
 
-        AreaCalculator calc = new AreaCalculator();
         Edge edge = new Edge(_field);
         if(edge.EdgeType(_pX, _pY) != EnumEdgeType.Edge)
         {

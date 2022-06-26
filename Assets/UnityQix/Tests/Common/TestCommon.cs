@@ -6,7 +6,7 @@ public static class TestCommon
 {
     public static Factory Factory()
     {
-        GameObject obj = (GameObject)Resources.Load("TestFactory");
+        GameObject obj = GameObject.Instantiate((GameObject)Resources.Load("TestFactory"));
         return obj.GetComponent<Factory>(); 
     }
 }
