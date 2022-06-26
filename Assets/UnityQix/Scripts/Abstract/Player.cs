@@ -27,11 +27,30 @@ public abstract class Player : MonoBehaviour
     {
         while(true)
         {
+            int px2 = _pX, py2 = _pY; 
             if (_input.IsLeft())
             {
-                yield return MoveTo(_pX, _pY);
+                px2 = _pX - 2; 
             }
-            yield return null; 
+            else if (_input.IsRight())
+            {
+                px2 = _pX + 2; 
+            }
+            else if (_input.IsUp())
+            {
+                py2 = _pY - 2; 
+            }
+            else if (_input.IsDown())
+            {
+                py2 = _pY + 2; 
+            }
+            if((px2 != _pX || py2 != _pY) && px2 >= 0 && py2 >= 0 && px2 < _field.Width() && py2 < _field.Height())
+            {
+                yield return MoveTo(_pX, _pY);
+            } else 
+            {
+                yield return null; 
+            }
         }
 
     }
