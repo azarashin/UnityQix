@@ -9,16 +9,18 @@ public class GameController : MonoBehaviour
     private Field _field;
     private Player[] _players;
     private IEnemy[] _enemies;
+    private float _quota; 
 
-    public void Setup(Field field, (int x, int y)[] initialPositions, Player[] players, IEnemy[] enemies)
+    public void Setup(Field field, (int x, int y)[] initialPositions, float quota, Player[] players, IEnemy[] enemies)
     {
         _calc = new AreaCalculator();
 
         _field = field; 
         _players = players; 
         _enemies = enemies;
+        _quota = quota; 
 
-        for(int i=0;i<players.Length;i++)
+        for (int i=0;i<players.Length;i++)
         {
             Player player = players[i];
             player.Setup(field, initialPositions[i].x, initialPositions[i].y);
@@ -48,5 +50,10 @@ public class GameController : MonoBehaviour
         int er = enemy.Radius();
 
         return (px - ex) * (px - ex) + (py - ey) * (py - ey) <= (pr + er) * (pr + er); 
+    }
+
+    public bool IsClearQuota()
+    {
+        return (float)_calc.NumberOfOccupiedPoints(_field) / (float)_calc.NumberOfAllPoints(_field) >= _quota; 
     }
 }
