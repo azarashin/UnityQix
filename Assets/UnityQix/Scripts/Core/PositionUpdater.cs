@@ -17,18 +17,18 @@ public class PositionUpdater
         || x1 < 0 || y1 < 0 || x1 >= _field.Width() || y1 >= _field.Height())
         {
             Debug.LogError($"({x0}, {y0}) => ({x1}, {y1}): Out of field! ");
-            throw new ArgumentException();
+            return false; 
         }
         if(x0 % 2 == 1 || y0 % 2 == 1 || x1 % 2 == 1 || y1 % 2 == 1)
         {
             Debug.LogError($"({x0}, {y0}) => ({x1}, {y1}): Invalid position! ");
-            throw new ArgumentException();
+            return false;
         }
-        if(!( x0 == x1 && Mathf.Abs(y0 - y1) == 2
+        if (!( x0 == x1 && Mathf.Abs(y0 - y1) == 2
             || y0 == y1 && Mathf.Abs(x0 - x1) == 2))
         {
             Debug.LogError($"({x0}, {y0}) => ({x1}, {y1}): Player can not step over 2 line tiles at once! ");
-            throw new ArgumentException();
+            return false;
         }
         int x = (x0 + x1) / 2;
         int y = (y0 + y1) / 2;
