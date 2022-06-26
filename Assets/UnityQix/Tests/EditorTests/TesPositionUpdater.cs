@@ -7,25 +7,15 @@ using UnityEngine.TestTools;
 
 public class TesPositionUpdater
 {
-    private bool ArgumentExceptionCheck(PositionUpdater p, int x0, int y0, int x1, int y1)
+    private bool ArgumentErrorCheck(PositionUpdater p, int x0, int y0, int x1, int y1)
     {
         bool original = UnityEngine.TestTools.LogAssert.ignoreFailingMessages; 
         UnityEngine.TestTools.LogAssert.ignoreFailingMessages = true;
-        try
-        {
-            p.IsMovable(x0, y0, x1, y1);
 
-        }
-        catch (ArgumentException)
-        {
-            // 正しく例外が発生した
-            UnityEngine.TestTools.LogAssert.ignoreFailingMessages = false;
-            return true;
+        bool ret = !p.IsMovable(x0, y0, x1, y1);
 
-        }
-        // 出るはずの例外が出なかったので失敗
         UnityEngine.TestTools.LogAssert.ignoreFailingMessages = false;
-        return false;
+        return ret; 
     }
 
     private bool ArgumentExceptionCheckDelta(PositionUpdater p, int dx, int dy)
@@ -79,105 +69,105 @@ public class TesPositionUpdater
         PositionUpdater p = new PositionUpdater(field);
         // 壁外から内側へ
         // 左上
-        Assert.IsTrue(ArgumentExceptionCheck(p, -2, 2, 0, 2));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, -2, 2, 0));
-        Assert.IsTrue(ArgumentExceptionCheck(p, -1, 2, 0, 2));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, -1, 2, 0));
+        Assert.IsTrue(ArgumentErrorCheck(p, -2, 2, 0, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, -2, 2, 0));
+        Assert.IsTrue(ArgumentErrorCheck(p, -1, 2, 0, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, -1, 2, 0));
 
         // 右上
-        Assert.IsTrue(ArgumentExceptionCheck(p, 8, 2, 6, 2));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 4, -2, 4, 0));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 7, 2, 6, 2));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 4, -1, 4, 0));
+        Assert.IsTrue(ArgumentErrorCheck(p, 8, 2, 6, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 4, -2, 4, 0));
+        Assert.IsTrue(ArgumentErrorCheck(p, 7, 2, 6, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 4, -1, 4, 0));
 
         // 左下
-        Assert.IsTrue(ArgumentExceptionCheck(p, -2, 4, 0, 4));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, 8, 2, 6));
-        Assert.IsTrue(ArgumentExceptionCheck(p, -1, 4, 0, 4));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, 7, 2, 6));
+        Assert.IsTrue(ArgumentErrorCheck(p, -2, 4, 0, 4));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, 8, 2, 6));
+        Assert.IsTrue(ArgumentErrorCheck(p, -1, 4, 0, 4));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, 7, 2, 6));
 
         // 右下
-        Assert.IsTrue(ArgumentExceptionCheck(p, 8, 4, 6, 4));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 4, 8, 4, 6));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 7, 4, 6, 4));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 4, 7, 4, 6));
+        Assert.IsTrue(ArgumentErrorCheck(p, 8, 4, 6, 4));
+        Assert.IsTrue(ArgumentErrorCheck(p, 4, 8, 4, 6));
+        Assert.IsTrue(ArgumentErrorCheck(p, 7, 4, 6, 4));
+        Assert.IsTrue(ArgumentErrorCheck(p, 4, 7, 4, 6));
 
         // 内側から壁外へ
         // 左上
-        Assert.IsTrue(ArgumentExceptionCheck(p, 0, 2, -2, 2));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, 0, 2, -2));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 0, 2, -1, 2));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, 0, 2, -1));
+        Assert.IsTrue(ArgumentErrorCheck(p, 0, 2, -2, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, 0, 2, -2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 0, 2, -1, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, 0, 2, -1));
 
         // 右上
-        Assert.IsTrue(ArgumentExceptionCheck(p, 6, 2, 8, 2));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 4, 0, 4, -2));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 6, 2, 7, 2));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 4, 0, 4, -1));
+        Assert.IsTrue(ArgumentErrorCheck(p, 6, 2, 8, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 4, 0, 4, -2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 6, 2, 7, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 4, 0, 4, -1));
 
         // 左下
-        Assert.IsTrue(ArgumentExceptionCheck(p, 0, 4, -2, 4));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, 6, 2, 8));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 0, 4, -1, 4));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, 6, 2, 7));
+        Assert.IsTrue(ArgumentErrorCheck(p, 0, 4, -2, 4));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, 6, 2, 8));
+        Assert.IsTrue(ArgumentErrorCheck(p, 0, 4, -1, 4));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, 6, 2, 7));
 
         // 右下
-        Assert.IsTrue(ArgumentExceptionCheck(p, 6, 4, 8, 4));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 4, 6, 4, 8));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 6, 4, 7, 4));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 4, 6, 4, 7));
+        Assert.IsTrue(ArgumentErrorCheck(p, 6, 4, 8, 4));
+        Assert.IsTrue(ArgumentErrorCheck(p, 4, 6, 4, 8));
+        Assert.IsTrue(ArgumentErrorCheck(p, 6, 4, 7, 4));
+        Assert.IsTrue(ArgumentErrorCheck(p, 4, 6, 4, 7));
 
         // 不正な歩幅
         // 内側で動き回る
         // 左→右
-        Assert.IsTrue(ArgumentExceptionCheck(p, 0, 2, 1, 2));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 0, 2, 3, 2));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 0, 2, 4, 2));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, 2, 3, 2));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, 2, 5, 2));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, 2, 6, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 0, 2, 1, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 0, 2, 3, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 0, 2, 4, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, 2, 3, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, 2, 5, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, 2, 6, 2));
         // 上→下
-        Assert.IsTrue(ArgumentExceptionCheck(p, 4, 0, 4, 1));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 4, 0, 4, 3));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 4, 0, 4, 4));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 4, 2, 4, 3));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 4, 2, 4, 5));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 4, 2, 4, 6));
+        Assert.IsTrue(ArgumentErrorCheck(p, 4, 0, 4, 1));
+        Assert.IsTrue(ArgumentErrorCheck(p, 4, 0, 4, 3));
+        Assert.IsTrue(ArgumentErrorCheck(p, 4, 0, 4, 4));
+        Assert.IsTrue(ArgumentErrorCheck(p, 4, 2, 4, 3));
+        Assert.IsTrue(ArgumentErrorCheck(p, 4, 2, 4, 5));
+        Assert.IsTrue(ArgumentErrorCheck(p, 4, 2, 4, 6));
         // 右→左
-        Assert.IsTrue(ArgumentExceptionCheck(p, 6, 4, 5, 4));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 6, 4, 3, 4));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 6, 4, 2, 4));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 4, 4, 3, 4));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 4, 4, 1, 4));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 4, 4, 0, 4));
+        Assert.IsTrue(ArgumentErrorCheck(p, 6, 4, 5, 4));
+        Assert.IsTrue(ArgumentErrorCheck(p, 6, 4, 3, 4));
+        Assert.IsTrue(ArgumentErrorCheck(p, 6, 4, 2, 4));
+        Assert.IsTrue(ArgumentErrorCheck(p, 4, 4, 3, 4));
+        Assert.IsTrue(ArgumentErrorCheck(p, 4, 4, 1, 4));
+        Assert.IsTrue(ArgumentErrorCheck(p, 4, 4, 0, 4));
         // 下→上
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, 6, 2, 5));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, 6, 2, 3));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, 6, 2, 2));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, 4, 2, 3));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, 4, 2, 1));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, 4, 2, 0));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, 6, 2, 5));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, 6, 2, 3));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, 6, 2, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, 4, 2, 3));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, 4, 2, 1));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, 4, 2, 0));
 
         // 不正な移動開始位置
         // 左→右
-        Assert.IsTrue(ArgumentExceptionCheck(p, 1, 2, 2, 2));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 1, 2, 3, 2));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 1, 2, 4, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 1, 2, 2, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 1, 2, 3, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 1, 2, 4, 2));
 
         // 上→下
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, 1, 2, 2));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, 1, 2, 3));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, 1, 2, 4));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, 1, 2, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, 1, 2, 3));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, 1, 2, 4));
 
         // 右→左
-        Assert.IsTrue(ArgumentExceptionCheck(p, 5, 2, 4, 2));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 5, 2, 3, 2));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 5, 2, 2, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 5, 2, 4, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 5, 2, 3, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 5, 2, 2, 2));
 
         // 下→上
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, 5, 2, 4));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, 5, 2, 3));
-        Assert.IsTrue(ArgumentExceptionCheck(p, 2, 5, 2, 2));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, 5, 2, 4));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, 5, 2, 3));
+        Assert.IsTrue(ArgumentErrorCheck(p, 2, 5, 2, 2));
     }
 
     // 空のフィールド
