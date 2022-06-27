@@ -8,7 +8,7 @@ public class PlayerForTest : Player
 
     public PlayerForTest()
     {
-        _input = new InputManagerStub(); 
+        _input = new InputManagerStub();
     }
 
     public override IInputManager GetInput()
@@ -18,6 +18,6 @@ public class PlayerForTest : Player
 
     public override IEnumerator MoveTo(int x, int y)
     {
-        yield return null; 
+        yield return null;
     }
 }
