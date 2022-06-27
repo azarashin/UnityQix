@@ -4,7 +4,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class TestPlayerField
+public class TestGameController
 {
     /// <summary>
     /// 占有していく経緯の確認
