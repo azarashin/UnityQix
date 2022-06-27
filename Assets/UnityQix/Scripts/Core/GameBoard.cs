@@ -11,7 +11,7 @@ public abstract class GameBoard : MonoBehaviour
     FieldFactory _fieldFactory;
 
     [SerializeField]
-    int _stage = 0; 
+    int _stage = 0;
 
     private Field _field;
 
@@ -19,9 +19,9 @@ public abstract class GameBoard : MonoBehaviour
     void Start()
     {
         _field = _fieldFactory.GenerateField(_stage);
-        for(int i=0;i<_players.Length;i++)
+        for (int i = 0; i < _players.Length; i++)
         {
-            (int px, int py) = _fieldFactory.GetInitialPosition(_stage, i); 
+            (int px, int py) = _fieldFactory.GetInitialPosition(_stage, i);
             _players[i].Setup(_field, px, py);
         }
     }
@@ -29,6 +29,6 @@ public abstract class GameBoard : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
