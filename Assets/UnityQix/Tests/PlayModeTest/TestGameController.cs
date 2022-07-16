@@ -21,7 +21,7 @@ public class TestGameController
         controller.Setup(
             field,
             new (int, int)[] { (4, 8) },
-            0.8f, 
+            0.8f, 1, 1, 
             new Player[] { player },
             new IEnemy[] { new TestEnemy(5, 5, 1) }
             );
@@ -117,7 +117,7 @@ public class TestGameController
         controller.Setup(
             field,
             new (int, int)[] { (4, 8) },
-            0.8f,
+            0.8f, 1, 1,
             new Player[] { player },
             new IEnemy[] { new TestEnemy(5, 5, 1) }
             );
@@ -153,7 +153,7 @@ public class TestGameController
         controller.Setup(
             field,
             new (int, int)[] { (4, 8) },
-            0.8f,
+            0.8f, 1, 1,
             new Player[] { player },
             new IEnemy[] { new TestEnemy(5, 5, 1) }
             );
