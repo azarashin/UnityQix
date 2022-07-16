@@ -10,8 +10,8 @@ public abstract class Player : MonoBehaviour
 
     private IInputManager _input;
     private Field _field;
-    AreaCalculator _calc;
-    PositionUpdater _pos;
+    private AreaCalculator _calc;
+    private PositionUpdater _pos;
     private int _pX, _pY;
 
     private bool _onBase;
