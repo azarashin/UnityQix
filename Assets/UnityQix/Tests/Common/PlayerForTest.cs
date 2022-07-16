@@ -6,9 +6,14 @@ public class PlayerForTest : Player
 {
     private IInputManager _input;
 
+    public int Px { get; private set; }
+    public int Py { get; private set; }
+
     public PlayerForTest()
     {
         _input = new InputManagerStub();
+        Px = -1;
+        Py = -1;
     }
 
     public override IInputManager GetInput()
@@ -17,6 +22,8 @@ public class PlayerForTest : Player
     }
 
     public override IEnumerator MoveTo(int x, int y)
+        Px = x;
+        Py = y; 
     {
         yield return null;
     }
