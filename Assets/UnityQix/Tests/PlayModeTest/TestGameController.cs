@@ -11,7 +11,7 @@ public class TestGameController
     /// </summary>
     /// <returns></returns>
     [UnityTest]
-    public IEnumerator TestPlayerFieldWithEnumeratorPasses000()
+    public IEnumerator TestGameControllerWithEnumeratorPasses000()
     {
         Factory factory = TestCommon.Factory();
         PlayerForTest player = (PlayerForTest)factory.GetPlayer(0);
@@ -97,7 +97,7 @@ public class TestGameController
     /// </summary>
     /// <returns></returns>
     [UnityTest]
-    public IEnumerator TestPlayerFieldWithEnumeratorPasses001()
+    public IEnumerator TestGameControllerWithEnumeratorPasses001()
     {
         Factory factory = TestCommon.Factory();
         Player player = factory.GetPlayer(0);
@@ -133,7 +133,7 @@ public class TestGameController
     /// </summary>
     /// <returns></returns>
     [UnityTest]
-    public IEnumerator TestPlayerFieldWithEnumeratorPasses002()
+    public IEnumerator TestGameControllerWithEnumeratorPasses002()
     {
         Factory factory = TestCommon.Factory();
         Player player = factory.GetPlayer(0);
