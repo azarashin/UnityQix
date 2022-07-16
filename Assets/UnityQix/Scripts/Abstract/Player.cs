@@ -67,12 +67,14 @@ public abstract class Player : MonoBehaviour
             }
             if (_pos.IsMovable(_pX, _pY, px2, py2, _acceptToMoveOnLine))
             {
+                int ox = _pX;
+                int oy = _pY;
                 _field.SetAreaType((_pX + px2) / 2, (_pY + py2) / 2, EnumBlockType.OnLine);
                 _field.SetAreaType(px2, py2, EnumBlockType.OnLine);
                 _calc.UpdateField(_field, new (int, int)[] { (5, 5) });
                 _pX = px2;
                 _pY = py2;
-                yield return MoveTo(_pX, _pY);
+                yield return CoMoveTo(ox, oy, _pX, _pY);
             }
             else
             {
