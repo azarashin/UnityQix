@@ -14,7 +14,7 @@ public class TestGameController
     public IEnumerator TestPlayerFieldWithEnumeratorPasses000()
     {
         Factory factory = TestCommon.Factory();
-        Player player = factory.GetPlayer(0);
+        PlayerForTest player = (PlayerForTest)factory.GetPlayer(0);
         Field field = new Field(9, 9);
         InputManagerStub input = (InputManagerStub)player.GetInput();
         GameController controller = factory.GetGameController();
@@ -38,6 +38,8 @@ public class TestGameController
 #########
 ");
         Assert.AreEqual(expected0.DebugField(), field.DebugField());
+        Assert.AreEqual((4, 8), player.Position());
+
 
         input.SetState(false, false, true, false);
         yield return null;
@@ -53,6 +55,7 @@ public class TestGameController
 #########
 ");
         Assert.AreEqual(expected1.DebugField(), field.DebugField());
+        Assert.AreEqual((4, 6), player.Position());
 
         input.SetState(true, false, false, false);
         yield return null;
@@ -68,6 +71,7 @@ public class TestGameController
 #########
 ");
         Assert.AreEqual(expected2.DebugField(), field.DebugField());
+        Assert.AreEqual((2, 6), player.Position());
 
         input.SetState(true, false, false, false);
         yield return null;
@@ -83,6 +87,7 @@ public class TestGameController
 #########
 ");
         Assert.AreEqual(expected3.DebugField(), field.DebugField());
+        Assert.AreEqual((0, 6), player.Position());
 
     }
 
