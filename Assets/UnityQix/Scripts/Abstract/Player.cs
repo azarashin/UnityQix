@@ -13,6 +13,9 @@ public abstract class Player : MonoBehaviour
     private AreaCalculator _calc;
     private PositionUpdater _pos;
     private int _pX, _pY;
+    private int _lives;
+    private int _units;
+    private int _initialLives;
 
     private bool _onBase;
 
@@ -80,6 +83,8 @@ public abstract class Player : MonoBehaviour
         _pY = y;
         _calc = new AreaCalculator();
         _pos = new PositionUpdater(_field);
+        _initialLives = _lives = lives;
+        _units = units;
 
         Edge edge = new Edge(_field);
         if (edge.EdgeType(_pX, _pY) != EnumEdgeType.Edge)

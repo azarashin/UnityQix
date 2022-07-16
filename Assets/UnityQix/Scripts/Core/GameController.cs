@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour
     private IEnemy[] _enemies;
     private float _quota; 
 
-    public void Setup(Field field, (int x, int y)[] initialPositions, float quota, Player[] players, IEnemy[] enemies)
+    public void Setup(Field field, (int x, int y)[] initialPositions, float quota, int lives, int units, Player[] players, IEnemy[] enemies)
     {
         _calc = new AreaCalculator();
 
@@ -23,7 +23,7 @@ public class GameController : MonoBehaviour
         for (int i=0;i<players.Length;i++)
         {
             Player player = players[i];
-            player.Setup(field, initialPositions[i].x, initialPositions[i].y);
+            player.Setup(field, initialPositions[i].x, initialPositions[i].y, lives, units);
         }
     }
 
