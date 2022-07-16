@@ -19,7 +19,15 @@ public abstract class Player : MonoBehaviour
 
     private bool _onBase;
 
-    public abstract IEnumerator MoveTo(int x, int y);
+    /// <summary>
+    /// 移動するときの経過処理。移動経過中は移動入力を受け付けない。
+    /// </summary>
+    /// <param name="ox">移動元x座標</param>
+    /// <param name="oy">移動元y座標</param>
+    /// <param name="x">移動先x座標</param>
+    /// <param name="y">移動先y座標</param>
+    /// <returns></returns>
+    protected abstract IEnumerator CoMoveTo(int ox, int oy, int x, int y);
     public abstract IInputManager GetInput();
 
     private void Start()

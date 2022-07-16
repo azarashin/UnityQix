@@ -21,9 +21,12 @@ public class PlayerForTest : Player
         return _input;
     }
 
-    public override IEnumerator MoveTo(int x, int y)
+    protected override IEnumerator CoMoveTo(int ox, int oy, int x, int y)
+    {
         Px = x;
         Py = y; 
+        yield return null; 
+    }
     {
         yield return null;
     }
