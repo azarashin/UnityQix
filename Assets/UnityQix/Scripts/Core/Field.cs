@@ -16,7 +16,8 @@ public class Field
     /// .: 非占有
     /// $: 占有
     /// o: 非ライン
-    /// #: ライン
+    /// #: ライン(描画確定)
+    /// @: ライン（描画中）
     /// </summary>
     /// <param name="source">フィールドを示す文字列</param>
     public Field(string source)
@@ -27,6 +28,7 @@ public class Field
         dic['o'] = EnumBlockType.NoLine;
         dic['$'] = EnumBlockType.OccupiedArea;
         dic['#'] = EnumBlockType.OnLine;
+        dic['@'] = EnumBlockType.OnLineDrawing;
         string[] lines = source.Split('\n');
         if (lines.Any(s => s.Length != lines[0].Length))
         {
@@ -178,6 +180,7 @@ public class Field
         dic[EnumBlockType.NoLine] = "o";
         dic[EnumBlockType.OccupiedArea] = "$";
         dic[EnumBlockType.OnLine] = "#";
+        dic[EnumBlockType.OnLineDrawing] = "@";
         for (int y = 0; y < Height(); y++)
         {
             for (int x = 0; x < Width(); x++)
