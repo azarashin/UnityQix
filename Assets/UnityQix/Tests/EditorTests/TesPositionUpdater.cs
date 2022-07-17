@@ -608,6 +608,186 @@ public class TesPositionUpdater
 
     }
 
+    // 指定された地点からほかの地点に移動可能かどうかを判定する(重量アルゴリズム版)
+    [Test]
+    public void TesPositionUpdaterSimplePasses021()
+    {
+        Field field = new Field(@"
+#######
+#$#.#$#
+###o###
+#.o.o.#
+###o###
+#$#.#$#
+#######
+");
+        PositionUpdater p = new PositionUpdater(field);
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(0, 2));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(0, 4));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 0));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 2));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 4));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 6));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 0));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 2));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 4));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 6));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(6, 2));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(6, 4));
+
+        Assert.IsFalse(p.IsMovablePointWithLightAlgorithm(0, 0));
+        Assert.IsFalse(p.IsMovablePointWithLightAlgorithm(0, 6));
+        Assert.IsFalse(p.IsMovablePointWithLightAlgorithm(6, 0));
+        Assert.IsFalse(p.IsMovablePointWithLightAlgorithm(6, 6));
+
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(0, 0, true));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(0, 6, true));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(6, 0, true));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(6, 6, true));
+    }
+
+    // 指定された地点からほかの地点に移動可能かどうかを判定する(重量アルゴリズム版)
+    [Test]
+    public void TesPositionUpdaterSimplePasses022()
+    {
+        Field field = new Field(@"
+#######
+#.o.@.#
+#@@o@o#
+#.o.o.#
+#o@o@@#
+#.@.o.#
+#######
+");
+        PositionUpdater p = new PositionUpdater(field);
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(0, 0));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(0, 4));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(0, 6));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 0));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 2));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 4));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 2));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 4));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 6));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(6, 0));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(6, 2));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(6, 6));
+
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(0, 2));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 6));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 0));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(6, 4));
+
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 2));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 4));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 2));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 4));
+
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 2, true));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 4, true));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 2, true));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 4, true));
+    }
+
+    // 指定された地点からほかの地点に移動可能かどうかを判定する(重量アルゴリズム版)
+    [Test]
+    public void TesPositionUpdaterSimplePasses023()
+    {
+        Field field = new Field(@"
+#######
+#.o.o.#
+#o###o#
+#.#$#.#
+#o###o#
+#.o.o.#
+#######
+");
+        PositionUpdater p = new PositionUpdater(field);
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(0, 0));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(0, 2));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(0, 4));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(0, 6));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 0));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 2));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 4));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 6));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 0));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 2));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 4));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 6));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(6, 0));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(6, 2));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(6, 4));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(6, 6));
+
+    }
+
+    // 指定された地点からほかの地点に移動可能かどうかを判定する(重量アルゴリズム版)
+    [Test]
+    public void TesPositionUpdaterSimplePasses024()
+    {
+        Field field = new Field(@"
+#######
+#.#$#.#
+#o#o#o#
+#.#$#.#
+#o###o#
+#.#$#.#
+#######
+");
+        PositionUpdater p = new PositionUpdater(field);
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(0, 0));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(0, 2));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(0, 4));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(0, 6));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 0));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 2));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 4));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 6));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 0));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 2));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 4));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 6));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(6, 0));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(6, 2));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(6, 4));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(6, 6));
+
+    }
+
+    // 指定された地点からほかの地点に移動可能かどうかを判定する(重量アルゴリズム版)
+    [Test]
+    public void TesPositionUpdaterSimplePasses025()
+    {
+        Field field = new Field(@"
+#######
+#.o.o.#
+#######
+#.o$#.#
+#######
+#.o.o.#
+#######
+");
+        PositionUpdater p = new PositionUpdater(field);
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(0, 0));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(0, 2));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(0, 4));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(0, 6));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 0));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 2));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 4));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(2, 6));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 0));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 2));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 4));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(4, 6));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(6, 0));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(6, 2));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(6, 4));
+        Assert.IsTrue(p.IsMovablePointWithLightAlgorithm(6, 6));
+
+    }
+
     // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
     // `yield return null;` to skip a frame.
     [UnityTest]
