@@ -39,15 +39,15 @@ public class AreaCalculator
     public void UpdateField(Field field, (int X, int Y)[] targets)
     {
         EnumBlockType[,] newField = field.Copy();
-        Field ret = null; 
-        for (int y = 1;y < field.Height(); y += 2)
+        Field ret = null;
+        for (int y = 1; y < field.Height(); y += 2)
         {
             for (int x = 1; x < field.Width(); x += 2)
             {
-                newField[x, y] = EnumBlockType.OccupiedArea; 
+                newField[x, y] = EnumBlockType.OccupiedArea;
             }
         }
-        foreach((int X, int Y) target in targets)
+        foreach ((int X, int Y) target in targets)
         {
             Fill(newField, target);
         }
