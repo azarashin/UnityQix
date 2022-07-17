@@ -22,5 +22,6 @@ public enum EnumBlockType
     /// <summary>
     /// 占有
     /// </summary>
-    OccupiedArea, 
+    OccupiedArea,
+    OnLineDrawing,
 }
