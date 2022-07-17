@@ -47,11 +47,63 @@ public class AreaCalculator
                 newField[x, y] = EnumBlockType.OccupiedArea;
             }
         }
+        JudgeLineBackTrace(newField);
         foreach ((int X, int Y) target in targets)
         {
             Fill(newField, target);
         }
         field.UpdateField(newField);
+    }
+
+    private void JudgeLineBackTrace(EnumBlockType[,] field)
+    {
+        for (int y = 0; y < field.GetLength(1); y += 2)
+        {
+            for (int x = 0; x < field.GetLength(0); x += 2)
+            {
+                if (field[x, y] == EnumBlockType.ConnectedPoint)
+                {
+                    LineBackTrace(field, x, y);
+                }
+            }
+        }
+
+    }
+
+    private void LineBackTrace(EnumBlockType[,] field, int px, int py)
+    {
+        if (px > 1 && field[px - 1, py] == EnumBlockType.OnLineDrawing)
+        {
+            field[px, py] = EnumBlockType.OnLine;
+            field[px - 1, py] = EnumBlockType.OnLine;
+            LineBackTrace(field, px - 2, py);
+            return;
+        }
+
+        if (px < field.GetLength(0) - 1 && field[px + 1, py] == EnumBlockType.OnLineDrawing)
+        {
+            field[px, py] = EnumBlockType.OnLine;
+            field[px + 1, py] = EnumBlockType.OnLine;
+            LineBackTrace(field, px + 2, py);
+            return;
+        }
+
+        if (py > 1 && field[px, py - 1] == EnumBlockType.OnLineDrawing)
+        {
+            field[px, py] = EnumBlockType.OnLine;
+            field[px, py - 1] = EnumBlockType.OnLine;
+            LineBackTrace(field, px, py - 2);
+            return;
+        }
+
+        if (py < field.GetLength(1) - 1 && field[px, py + 1] == EnumBlockType.OnLineDrawing)
+        {
+            field[px, py] = EnumBlockType.OnLine;
+            field[px, py + 1] = EnumBlockType.OnLine;
+            LineBackTrace(field, px, py + 2);
+            return;
+        }
+
     }
 
     /// <summary>
