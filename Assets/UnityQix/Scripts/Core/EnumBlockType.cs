@@ -23,5 +23,14 @@ public enum EnumBlockType
     /// 占有
     /// </summary>
     OccupiedArea,
+
+    /// <summary>
+    /// 描画中
+    /// </summary>
     OnLineDrawing,
+
+    /// <summary>
+    /// 描画が完了したポイント
+    /// </summary>
+    ConnectedPoint,
 }

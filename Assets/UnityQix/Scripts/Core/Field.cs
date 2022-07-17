@@ -18,6 +18,7 @@ public class Field
     /// o: 非ライン
     /// #: ライン(描画確定)
     /// @: ライン（描画中）
+    /// *: 描画完了(Update とLastUpdate の区間でのみ存在する)
     /// </summary>
     /// <param name="source">フィールドを示す文字列</param>
     public Field(string source)
@@ -29,6 +30,8 @@ public class Field
         dic['$'] = EnumBlockType.OccupiedArea;
         dic['#'] = EnumBlockType.OnLine;
         dic['@'] = EnumBlockType.OnLineDrawing;
+        dic['*'] = EnumBlockType.ConnectedPoint;
+        
         string[] lines = source.Split('\n');
         if (lines.Any(s => s.Length != lines[0].Length))
         {
@@ -181,6 +184,7 @@ public class Field
         dic[EnumBlockType.OccupiedArea] = "$";
         dic[EnumBlockType.OnLine] = "#";
         dic[EnumBlockType.OnLineDrawing] = "@";
+        dic[EnumBlockType.ConnectedPoint] = "*";
         for (int y = 0; y < Height(); y++)
         {
             for (int x = 0; x < Width(); x++)
