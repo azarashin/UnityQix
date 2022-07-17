@@ -88,8 +88,8 @@ public class AreaCalculator
     /// <returns>(更新されたタスク一覧, 更新されたフィールド)</returns>
     private void AddTask(EnumBlockType[,] newField, List<(int x, int y)> tasks, (int x, int y) task)
     {
-        newField[task.x, task.y] = EnumBlockType.FreeArea; 
-        if(newField[task.x - 1, task.y] == EnumBlockType.NoLine && newField[task.x - 2, task.y] == EnumBlockType.OccupiedArea)
+        newField[task.x, task.y] = EnumBlockType.FreeArea;
+        if (newField[task.x - 1, task.y] == EnumBlockType.NoLine && newField[task.x - 2, task.y] == EnumBlockType.OccupiedArea)
         {
             tasks.Add((task.x - 2, task.y));
         }
