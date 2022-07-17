@@ -9,18 +9,18 @@ public class TesPositionUpdater
 {
     private bool ArgumentErrorCheck(PositionUpdater p, int x0, int y0, int x1, int y1)
     {
-        bool original = UnityEngine.TestTools.LogAssert.ignoreFailingMessages; 
+        bool original = UnityEngine.TestTools.LogAssert.ignoreFailingMessages;
         UnityEngine.TestTools.LogAssert.ignoreFailingMessages = true;
 
         bool ret = !p.IsMovable(x0, y0, x1, y1);
 
         UnityEngine.TestTools.LogAssert.ignoreFailingMessages = false;
-        return ret; 
+        return ret;
     }
 
     private bool ArgumentExceptionCheckDelta(PositionUpdater p, int dx, int dy)
     {
-        bool original = UnityEngine.TestTools.LogAssert.ignoreFailingMessages; 
+        bool original = UnityEngine.TestTools.LogAssert.ignoreFailingMessages;
         UnityEngine.TestTools.LogAssert.ignoreFailingMessages = true;
         try
         {
@@ -65,7 +65,7 @@ public class TesPositionUpdater
     }
 
     private void IrregularCheck(Field field)
-    { 
+    {
         PositionUpdater p = new PositionUpdater(field);
         // 壁外から内側へ
         // 左上
@@ -339,35 +339,58 @@ public class TesPositionUpdater
     {
         Field field = new Field(@"
 #######
-#.o.#.#
-###o#o#
+#.o.@.#
+#@@o@o#
 #.o.o.#
-#o#o###
-#.#.o.#
+#o@o@@#
+#.@.o.#
 #######
 ");
         PositionUpdater p = new PositionUpdater(field);
         Assert.IsFalse(p.IsMovable(0, 2, 2, 2));
-        Assert.IsFalse(p.IsMovable(2, 2, 0, 2));
         Assert.IsFalse(p.IsMovable(4, 0, 4, 2));
-        Assert.IsFalse(p.IsMovable(4, 2, 4, 0));
         Assert.IsFalse(p.IsMovable(6, 4, 4, 4));
-        Assert.IsFalse(p.IsMovable(4, 4, 6, 4));
         Assert.IsFalse(p.IsMovable(2, 6, 2, 4));
-        Assert.IsFalse(p.IsMovable(2, 4, 2, 6));
 
-        Assert.IsTrue(p.IsMovable(0, 2, 2, 2, true));
+        // 後ろに戻る場合
+        Assert.IsTrue(p.IsMovable(2, 2, 0, 2));
+        Assert.IsTrue(p.IsMovable(4, 2, 4, 0));
+        Assert.IsTrue(p.IsMovable(4, 4, 6, 4));
+        Assert.IsTrue(p.IsMovable(2, 4, 2, 6));
+
+        // 後ろに戻る場合
         Assert.IsTrue(p.IsMovable(2, 2, 0, 2, true));
-        Assert.IsTrue(p.IsMovable(4, 0, 4, 2, true));
         Assert.IsTrue(p.IsMovable(4, 2, 4, 0, true));
-        Assert.IsTrue(p.IsMovable(6, 4, 4, 4, true));
         Assert.IsTrue(p.IsMovable(4, 4, 6, 4, true));
-        Assert.IsTrue(p.IsMovable(2, 6, 2, 4, true));
         Assert.IsTrue(p.IsMovable(2, 4, 2, 6, true));
 
+        // 描画中の線から描画済みの線に移動し、占拠するケース
+        Assert.IsTrue(p.IsMovable(2, 2, 2, 0));
+        Assert.IsTrue(p.IsMovable(4, 2, 6, 2));
+        Assert.IsTrue(p.IsMovable(4, 4, 4, 6));
+        Assert.IsTrue(p.IsMovable(2, 4, 0, 4));
+        Assert.IsTrue(p.IsMovable(2, 2, 2, 0, true));
+        Assert.IsTrue(p.IsMovable(4, 2, 6, 2, true));
+        Assert.IsTrue(p.IsMovable(4, 4, 4, 6, true));
+        Assert.IsTrue(p.IsMovable(2, 4, 0, 4, true));
+
+        // 後ろに戻る場合を除き、描画中の線の上には移動できない
+        Assert.IsFalse(p.IsMovable(0, 2, 2, 2, true));
+        Assert.IsFalse(p.IsMovable(4, 0, 4, 2, true));
+        Assert.IsFalse(p.IsMovable(6, 4, 4, 4, true));
+        Assert.IsFalse(p.IsMovable(2, 6, 2, 4, true));
+
+        Assert.IsFalse(p.IsMovable(2, 2, 4, 2, true));
+        Assert.IsFalse(p.IsMovable(2, 2, 2, 4, true));
+        Assert.IsFalse(p.IsMovable(4, 2, 2, 2, true));
+        Assert.IsFalse(p.IsMovable(4, 2, 4, 4, true));
+        Assert.IsFalse(p.IsMovable(2, 4, 2, 2, true));
+        Assert.IsFalse(p.IsMovable(2, 4, 4, 4, true));
+        Assert.IsFalse(p.IsMovable(4, 4, 2, 4, true));
+        Assert.IsFalse(p.IsMovable(4, 4, 4, 2, true));
     }
 
-    // 
+    // 異常パラメータチェック
     [Test]
     public void TesPositionUpdaterSimplePasses009()
     {
@@ -389,7 +412,7 @@ public class TesPositionUpdater
         ArgumentExceptionCheckDelta(p, -1, -1);
     }
 
-    // 
+    // 半歩移動した場所の両サイド方向のベクトル２つを求める
     [Test]
     public void TesPositionUpdaterSimplePasses010()
     {
@@ -405,6 +428,186 @@ public class TesPositionUpdater
         Assert.AreEqual((-1, -1, -1, 1), p.SideForward(-1, 0));
     }
 
+    // 指定された地点からほかの地点に移動可能かどうかを判定する(重量アルゴリズム版)
+    [Test]
+    public void TesPositionUpdaterSimplePasses011()
+    {
+        Field field = new Field(@"
+#######
+#$#.#$#
+###o###
+#.o.o.#
+###o###
+#$#.#$#
+#######
+");
+        PositionUpdater p = new PositionUpdater(field);
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(0, 2));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(0, 4));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 0));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 2));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 4));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 6));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 0));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 2));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 4));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 6));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(6, 2));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(6, 4));
+
+        Assert.IsFalse(p.IsMovablePointWithHeavyAlgorithm(0, 0));
+        Assert.IsFalse(p.IsMovablePointWithHeavyAlgorithm(0, 6));
+        Assert.IsFalse(p.IsMovablePointWithHeavyAlgorithm(6, 0));
+        Assert.IsFalse(p.IsMovablePointWithHeavyAlgorithm(6, 6));
+
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(0, 0, true));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(0, 6, true));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(6, 0, true));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(6, 6, true));
+    }
+
+    // 指定された地点からほかの地点に移動可能かどうかを判定する(重量アルゴリズム版)
+    [Test]
+    public void TesPositionUpdaterSimplePasses012()
+    {
+        Field field = new Field(@"
+#######
+#.o.@.#
+#@@o@o#
+#.o.o.#
+#o@o@@#
+#.@.o.#
+#######
+");
+        PositionUpdater p = new PositionUpdater(field);
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(0, 0));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(0, 4));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(0, 6));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 0));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 2));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 4));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 2));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 4));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 6));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(6, 0));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(6, 2));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(6, 6));
+
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(0, 2));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 6));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 0));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(6, 4));
+
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 2));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 4));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 2));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 4));
+
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 2, true));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 4, true));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 2, true));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 4, true));
+    }
+
+    // 指定された地点からほかの地点に移動可能かどうかを判定する(重量アルゴリズム版)
+    [Test]
+    public void TesPositionUpdaterSimplePasses013()
+    {
+        Field field = new Field(@"
+#######
+#.o.o.#
+#o###o#
+#.#$#.#
+#o###o#
+#.o.o.#
+#######
+");
+        PositionUpdater p = new PositionUpdater(field);
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(0, 0));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(0, 2));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(0, 4));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(0, 6));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 0));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 2));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 4));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 6));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 0));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 2));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 4));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 6));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(6, 0));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(6, 2));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(6, 4));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(6, 6));
+
+    }
+
+    // 指定された地点からほかの地点に移動可能かどうかを判定する(重量アルゴリズム版)
+    [Test]
+    public void TesPositionUpdaterSimplePasses014()
+    {
+        Field field = new Field(@"
+#######
+#.#$#.#
+#o#o#o#
+#.#$#.#
+#o###o#
+#.#$#.#
+#######
+");
+        PositionUpdater p = new PositionUpdater(field);
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(0, 0));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(0, 2));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(0, 4));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(0, 6));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 0));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 2));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 4));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 6));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 0));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 2));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 4));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 6));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(6, 0));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(6, 2));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(6, 4));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(6, 6));
+
+    }
+
+    // 指定された地点からほかの地点に移動可能かどうかを判定する(重量アルゴリズム版)
+    [Test]
+    public void TesPositionUpdaterSimplePasses015()
+    {
+        Field field = new Field(@"
+#######
+#.o.o.#
+#######
+#.o$#.#
+#######
+#.o.o.#
+#######
+");
+        PositionUpdater p = new PositionUpdater(field);
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(0, 0));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(0, 2));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(0, 4));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(0, 6));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 0));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 2));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 4));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(2, 6));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 0));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 2));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 4));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(4, 6));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(6, 0));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(6, 2));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(6, 4));
+        Assert.IsTrue(p.IsMovablePointWithHeavyAlgorithm(6, 6));
+
+    }
+
     // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
     // `yield return null;` to skip a frame.
     [UnityTest]
@@ -414,4 +617,6 @@ public class TesPositionUpdater
         // Use yield to skip a frame.
         yield return null;
     }
+
+
 }
