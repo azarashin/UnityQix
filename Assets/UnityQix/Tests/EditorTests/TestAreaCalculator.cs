@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
@@ -34,9 +34,9 @@ public class TestAreaCalculator
     {
         Field field = new Field(@"
 #######
-#$o$o.#
-#ooooo#
-#$o$o.#
+#$o$@.#
+#ooo@o#
+#$o$@.#
 #######
 ");
         AreaCalculator calc = new AreaCalculator();
@@ -370,9 +370,9 @@ public class TestAreaCalculator
 ###############o#o#
 #.o.o.o.o.o.o.#.#.#
 #o###########o#o#o#
-#.#.o.o.#.o.#.#.#.#
-#o#o###o#o#o#o#o#o#
-#.#.#.#.o.#.#.#.#.#
+#.#.o.o.@.o.#.#.#.#
+#o#o###o@o@o#o#o#o#
+#.#.#.#.o.@.#.#.#.#
 #o#o#o#######o#o#o#
 #.#.#.o.o.o.o.#.#.#
 #o#o###########o#o#
@@ -389,9 +389,9 @@ public class TestAreaCalculator
 ###############o#o#
 #.o.o.o.o.o.o.#$#.#
 #o###########o#o#o#
-#.#$o$o$#$o$#.#$#.#
-#o#o###o#o#o#o#o#o#
-#.#$#.#$o$#$#.#$#.#
+#.#$o$o$@$o$#.#$#.#
+#o#o###o@o@o#o#o#o#
+#.#$#.#$o$@$#.#$#.#
 #o#o#o#######o#o#o#
 #.#$#.o.o.o.o.#$#.#
 #o#o###########o#o#
