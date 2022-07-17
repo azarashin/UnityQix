@@ -50,8 +50,8 @@ public class TestGameController
 #.o.o.o.#
 #ooooooo#
 #.o.o.o.#
-#ooo#ooo#
-#.o.#.o.#
+#ooo@ooo#
+#.o.@.o.#
 #########
 ");
         Assert.AreEqual(expected1.DebugField(), field.DebugField());
@@ -66,8 +66,8 @@ public class TestGameController
 #.o.o.o.#
 #ooooooo#
 #.o.o.o.#
-#o###ooo#
-#.o.#.o.#
+#o@@@ooo#
+#.o.@.o.#
 #########
 ");
         Assert.AreEqual(expected2.DebugField(), field.DebugField());
