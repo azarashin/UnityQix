@@ -37,8 +37,21 @@ public class TestGameController
 #.o.o.o.#
 #########
 ");
+
+        string expectedOwner0 = Field.DebugOwnedMap(@"
+---------
+---------
+---------
+---------
+---------
+---------
+---------
+---------
+---------
+");
         Assert.AreEqual(expected0.DebugField(), field.DebugField());
         Assert.AreEqual((4, 8), player.Position());
+        Assert.AreEqual(expectedOwner0, field.DebugOwnedMap());
 
 
         input.SetState(false, false, true, false);
@@ -56,6 +69,7 @@ public class TestGameController
 ");
         Assert.AreEqual(expected1.DebugField(), field.DebugField());
         Assert.AreEqual((4, 6), player.Position());
+        Assert.AreEqual(expectedOwner0, field.DebugOwnedMap());
 
         input.SetState(true, false, false, false);
         yield return null;
@@ -72,6 +86,7 @@ public class TestGameController
 ");
         Assert.AreEqual(expected2.DebugField(), field.DebugField());
         Assert.AreEqual((2, 6), player.Position());
+        Assert.AreEqual(expectedOwner0, field.DebugOwnedMap());
 
         input.SetState(true, false, false, false);
         yield return null;
@@ -88,6 +103,21 @@ public class TestGameController
 ");
         Assert.AreEqual(expected3.DebugField(), field.DebugField());
         Assert.AreEqual((0, 6), player.Position());
+
+        // このタイミングでプレイヤー番号0 が領地を広げる
+        string expectedOwner1 = Field.DebugOwnedMap(@"
+---------
+---------
+---------
+---------
+---------
+---------
+---------
+-0-0-----
+---------
+");
+
+        Assert.AreEqual(expectedOwner1, field.DebugOwnedMap());
 
     }
 

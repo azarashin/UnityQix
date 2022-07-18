@@ -316,4 +316,28 @@ $$$
         Assert.AreEqual(fieldExpected.DebugField(), field.DebugField());
 
     }
+
+    /// <summary>
+    /// 空のフィールド(プレイヤーの占有状況確認)
+    /// </summary>
+    /// <returns></returns>
+    [Test]
+    public void TestAreaCalculatorWithEnumeratorPasses013()
+    {
+        int width = 5;
+        int height = 7;
+        Field field = new Field(width, height);
+        string expectedOwnerMap = Field.DebugOwnedMap(@"
+-----
+-----
+-----
+-----
+-----
+-----
+-----
+");
+        Assert.AreEqual(expectedOwnerMap, field.DebugOwnedMap());
+
+    }
+
 }

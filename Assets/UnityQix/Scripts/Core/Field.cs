@@ -11,7 +11,10 @@ using UnityEngine;
 /// </summary>
 public class Field
 {
-    EnumBlockType[,] _field;
+    private EnumBlockType[,] _field;
+    private int[,] _ownerMap;
+
+
     /// <summary>
     /// .: 非占有
     /// $: 占有
@@ -75,15 +78,43 @@ public class Field
                 }
             }
         }
+        ResetOwnerMap(lines[0].Length, lines.Length); 
     }
 
-    internal void UpdateField(EnumBlockType[,] newField)
+    private void ResetOwnerMap(int width, int height)
     {
+        _ownerMap = new int[width, height];
+        for(int y = 0;y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                _ownerMap[x, y] = -1; 
+            }
+        }
+    }
+
+    internal void UpdateField(EnumBlockType[,] previous, EnumBlockType[,] newField, int owner)
+    {
+        if (_field.GetLength(0) != previous.GetLength(0) || _field.GetLength(1) != previous.GetLength(1))
+        {
+            throw new ArgumentException();
+        }
         if (_field.GetLength(0) != newField.GetLength(0) || _field.GetLength(1) != newField.GetLength(1))
         {
             throw new ArgumentException();
         }
         Array.Copy(newField, _field, _field.Length);
+
+        for (int y = 1; y < Height(); y += 2)
+        {
+            for (int x = 1; x < Width(); x += 2)
+            {
+                if (previous[x, y] == EnumBlockType.FreeArea && newField[x, y] == EnumBlockType.OccupiedArea)
+                {
+                    _ownerMap[x, y] = owner;
+                }
+            }
+        }
     }
 
     public EnumBlockType[,] Copy()
@@ -125,6 +156,7 @@ public class Field
                 }
             }
         }
+        ResetOwnerMap(width, height);
     }
 
     public Field(EnumBlockType[,] field)
@@ -195,4 +227,39 @@ public class Field
         }
         return ret;
     }
+
+    public string DebugOwnedMap()
+    {
+        string ret = "";
+        for (int y = 0; y < Height(); y++)
+        {
+            for (int x = 0; x < Width(); x++)
+            {
+                if (_ownerMap[x, y] == -1)
+                {
+                    ret += "-";
+                }
+                else
+                {
+                    ret += $"{_ownerMap[x, y]:X}";
+                }
+            }
+            ret += "\r\n";
+        }
+        return ret;
+    }
+
+    public static string DebugOwnedMap(string src)
+    {
+        string ret = string
+            .Join("\r\n", src
+                .Replace("\r", "\n")
+                .Replace("\n\n", "\n")
+                .Trim()
+                .Split("\n")
+            ) + "\r\n";
+        return ret; 
+    }
+
+
 }

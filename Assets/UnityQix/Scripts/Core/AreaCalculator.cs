@@ -47,8 +47,8 @@ public class AreaCalculator
         (int X, int Y)[] targets = _enemies
             .Select(s => s.LogicalPosition())
             .ToArray();
+        EnumBlockType[,] previous = field.Copy();
         EnumBlockType[,] newField = field.Copy();
-        Field ret = null;
         for (int y = 1; y < field.Height(); y += 2)
         {
             for (int x = 1; x < field.Width(); x += 2)
@@ -61,7 +61,7 @@ public class AreaCalculator
         {
             Fill(newField, target);
         }
-        field.UpdateField(newField);
+        field.UpdateField(previous, newField, owner);
     }
 
     private void JudgeLineBackTrace(EnumBlockType[,] field)
