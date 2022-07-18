@@ -251,13 +251,11 @@ public class Field
 
     public static string DebugOwnedMap(string src)
     {
-        string ret = string
-            .Join("\r\n", src
+        string ret = src
                 .Replace("\r", "\n")
                 .Replace("\n\n", "\n")
-                .Trim()
-                .Split("\n")
-            ) + "\r\n";
+                .Replace("\n", "\r\n")
+                .Trim() + "\r\n";
         return ret; 
     }
 
