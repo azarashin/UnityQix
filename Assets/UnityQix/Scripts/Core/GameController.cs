@@ -32,6 +32,11 @@ public class GameController : MonoBehaviour
     /// </summary>
     void LateUpdate()
     {
+        if(_calc == null)
+        {
+            Debug.LogWarning("GameController.LateUpdate: GameController is not setup.");
+            return; 
+        }
         _calc.UpdateField(_field, _enemies.Select(s => s.LogicalPosition()).ToArray());
         foreach(Player player in _players)
         {
