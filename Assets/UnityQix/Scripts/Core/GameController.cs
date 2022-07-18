@@ -23,7 +23,7 @@ public class GameController : MonoBehaviour
         for (int i=0;i<players.Length;i++)
         {
             Player player = players[i];
-            player.Setup(field, initialPositions[i].x, initialPositions[i].y, lives, units);
+            player.Setup(field, initialPositions[i].x, initialPositions[i].y, _calc, lives, units, i);
         }
     }
 

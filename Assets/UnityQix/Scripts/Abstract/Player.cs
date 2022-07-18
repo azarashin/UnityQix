@@ -12,6 +12,7 @@ public abstract class Player : MonoBehaviour
     private Field _field;
     private AreaCalculator _calc;
     private PositionUpdater _pos;
+    private int _id; 
     private int _pX, _pY;
     private int _lives;
     private int _units;
@@ -134,17 +135,18 @@ public abstract class Player : MonoBehaviour
 
     }
 
-    public void Setup(Field field, int x, int y, int lives, int units)
+    public void Setup(Field field, int x, int y, AreaCalculator calc, int lives, int units, int id)
     {
         _input = GetInput();
 
         _field = field;
         _pX = x;
         _pY = y;
-        _calc = new AreaCalculator();
+        _calc = calc;
         _pos = new PositionUpdater(_field);
         _initialLives = _lives = lives;
         _units = units;
+        _id = id; 
         _invisibleTime = 0.0f; 
         _deadTrigger = false;
 
