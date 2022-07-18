@@ -14,18 +14,18 @@ public class Line
     int IdDown = 8;
     public Line(Edge edge)
     {
-        _lineField = new int[edge.Width(), edge.Height()]; 
-        for(int y=0;y<edge.Height();y++)
+        _lineField = new int[edge.Width(), edge.Height()];
+        for (int y = 0; y < edge.Height(); y++)
         {
             for (int x = 0; x < edge.Width(); x++)
             {
-                if(edge.EdgeType(x, y) == EnumEdgeType.None)
+                if (edge.EdgeType(x, y) == EnumEdgeType.None)
                 {
-                    _lineField[x, y] = IdEmpty; 
-                    continue; 
+                    _lineField[x, y] = IdEmpty;
+                    continue;
                 }
-                int val = 0; 
-                if(x > 0 && edge.EdgeType(x - 1, y) != EnumEdgeType.None)
+                int val = 0;
+                if (x > 0 && edge.EdgeType(x - 1, y) != EnumEdgeType.None)
                 {
                     val += IdLeft;
                 }
@@ -41,7 +41,7 @@ public class Line
                 {
                     val += IdDown;
                 }
-                _lineField[x, y] = val; 
+                _lineField[x, y] = val;
             }
         }
     }
@@ -87,7 +87,7 @@ public class Line
         {
             for (int x = 0; x < Width(); x++)
             {
-                if(_lineField[x, y] == IdEmpty)
+                if (_lineField[x, y] == IdEmpty)
                 {
                     ret += $".";
                 }
@@ -99,5 +99,16 @@ public class Line
             ret += "\r\n";
         }
         return ret;
+    }
+
+    public static string DebugLine(string src)
+    {
+        return src
+            .Replace("\r", "\n")
+            .Replace("\n\n", "\n")
+            .Trim()
+            .Replace("\n", "\r\n")
+            + "\r\n";
+
     }
 }

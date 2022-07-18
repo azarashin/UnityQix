@@ -34,7 +34,7 @@ public class TestLine
 #######****++++######
 ";
 
-        string expected = @"
+        string expected = Line.DebugLine(@"
 A33333333333333333339
 C...................C
 C...................C
@@ -56,11 +56,12 @@ C...................C
 C...................C
 C...................C
 633333333333333333335
-";
+");
         expected = expected.Trim();
         Edge edge = new Edge(src);
-        string line = new Line(edge).DebugLine().Trim();
-        Debug.Log(line + "\n\n" + expected);
+        string line = new Line(edge)
+            .DebugLine()
+            .Trim();
         Assert.AreEqual(expected, line);
     }
 
