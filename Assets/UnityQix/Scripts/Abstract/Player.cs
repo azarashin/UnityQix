@@ -135,7 +135,7 @@ public abstract class Player : MonoBehaviour
 
     }
 
-    public void Setup(Field field, int x, int y, AreaCalculator calc, int lives, int units, int id)
+    internal void Setup(Field field, int x, int y, AreaCalculator calc, int lives, int units, int id)
     {
         _input = GetInput();
 
