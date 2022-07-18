@@ -13,6 +13,7 @@ public class Field
 {
     private EnumBlockType[,] _field;
     private int[,] _ownerMap;
+    private int[,] _scoreMap;
 
 
     /// <summary>
@@ -78,7 +79,8 @@ public class Field
                 }
             }
         }
-        ResetOwnerMap(lines[0].Length, lines.Length); 
+        ResetOwnerMap(lines[0].Length, lines.Length);
+        ResetScoreMap(lines[0].Length, lines.Length);
     }
 
     private void ResetOwnerMap(int width, int height)
@@ -89,6 +91,18 @@ public class Field
             for (int x = 0; x < width; x++)
             {
                 _ownerMap[x, y] = -1; 
+            }
+        }
+    }
+
+    private void ResetScoreMap(int width, int height)
+    {
+        _scoreMap = new int[width, height];
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                _scoreMap[x, y] = 0;
             }
         }
     }
@@ -267,5 +281,32 @@ public class Field
         return ret; 
     }
 
+    /// <summary>
+    /// 線の部分を除いた専有領域だけをカウントした場合の幅
+    /// </summary>
+    /// <returns>幅</returns>
+    public int AreaWidth()
+    {
+        return (Width() - 1) / 2;
+    }
 
+    /// <summary>
+    /// 線の部分を除いた専有領域だけをカウントした場合の高さ
+    /// </summary>
+    /// <returns>高さ</returns>
+
+    public int AreaHeight()
+    {
+        return (Height() - 1) / 2;
+    }
+    /// <summary>
+    /// プレイヤーが所有している領域のスコアを調べる。
+    /// </summary>
+    /// <param name="x">0 <= x < AreaWidth()</param>
+    /// <param name="y">0 <= y < AreaHeight()</param>
+    /// <returns></returns>
+    public int Score(int x, int y)
+    {
+        return _scoreMap[x * 2 + 1, y * 2 + 1];
+    }
 }
