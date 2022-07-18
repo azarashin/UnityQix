@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Edge
 {
-    private EnumEdgeType[,] _edge; 
+    private EnumEdgeType[,] _edge;
 
     public Edge(Field field)
     {
@@ -15,7 +15,7 @@ public class Edge
         {
             for (int x = 0; x < field.Width(); x++)
             {
-                _edge[x, y] =  EnumEdgeType.None;
+                _edge[x, y] = EnumEdgeType.None;
             }
         }
 
@@ -34,11 +34,11 @@ public class Edge
                 }
                 if (x % 2 == 0)
                 {
-                    if(x > 0 && x < field.Width() - 1)
+                    if (x > 0 && x < field.Width() - 1)
                     {
                         bool a = field.AreaType(x - 1, y) == EnumBlockType.FreeArea;
                         bool b = field.AreaType(x + 1, y) == EnumBlockType.FreeArea;
-                        if(field.AreaType(x, y) == EnumBlockType.NoLine)
+                        if (field.AreaType(x, y) == EnumBlockType.NoLine)
                         {
                             _edge[x, y] = EnumEdgeType.None;
                         }
@@ -46,7 +46,7 @@ public class Edge
                         {
                             _edge[x, y] = EnumEdgeType.Line;
                         }
-                        else if(!a && !b)
+                        else if (!a && !b)
                         {
                             _edge[x, y] = EnumEdgeType.Filled;
                         }
@@ -66,7 +66,7 @@ public class Edge
                             _edge[x, y] = EnumEdgeType.Filled;
                         }
                     }
-                    else if(x == field.Width() - 1)
+                    else if (x == field.Width() - 1)
                     {
                         if (field.AreaType(x - 1, y) == EnumBlockType.FreeArea)
                         {
@@ -134,7 +134,7 @@ public class Edge
             {
                 if ((x % 2 == 1 && y % 2 == 0) || (x % 2 == 0 && y % 2 == 1))
                 { // 確定している線エリア
-                    continue; 
+                    continue;
                 }
                 if (x % 2 == 1 && y % 2 == 1)
                 { // 占有対象エリア
@@ -143,13 +143,13 @@ public class Edge
                 if (field.AreaType(x, y) == EnumBlockType.NoLine)
                 {
                     _edge[x, y] = EnumEdgeType.None;
-                    continue; 
+                    continue;
                 }
                 EnumEdgeType up, down, left, right;
-                up = down = left = right = EnumEdgeType.Filled; 
+                up = down = left = right = EnumEdgeType.Filled;
                 if (x > 0)
                 {
-                    left = _edge[x - 1, y]; 
+                    left = _edge[x - 1, y];
                 }
                 if (x < field.Width() - 1)
                 {
@@ -261,7 +261,7 @@ public class Edge
     /// <returns>エッジの種別</returns>
     public EnumEdgeType EdgeType(int x, int y)
     {
-        return _edge[x, y]; 
+        return _edge[x, y];
     }
     public string DebugEdge()
     {
@@ -280,5 +280,15 @@ public class Edge
             ret += "\r\n";
         }
         return ret;
+    }
+
+    public static string DebugEdge(string src)
+    {
+        return src
+            .Replace("\r", "\n")
+            .Replace("\n\n", "\n")
+            .Trim()
+            .Replace("\n", "\r\n")
+            + "\r\n";
     }
 }
