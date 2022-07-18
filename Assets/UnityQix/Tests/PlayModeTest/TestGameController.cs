@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -377,6 +378,176 @@ public class TestGameController
         Assert.AreEqual(0, player.Units);
         Assert.IsFalse(controller.IsDuringTheGame());
         yield return null;
+    }
+
+    /// <summary>
+    /// 占有していく経緯の確認(複数プレイヤー)
+    /// </summary>
+    /// <returns></returns>
+    [UnityTest]
+    public IEnumerator TestGameControllerWithEnumeratorPasses006()
+    {
+        Factory factory = TestCommon.Factory();
+        Player[] players = new Player[] { factory.GetPlayer(0), factory.GetPlayer(1) };
+        Field field = new Field(9, 9);
+        InputManagerStub[] inputs = players
+            .Select(s => (InputManagerStub)s.GetInput())
+            .ToArray();
+        GameController controller = factory.GetGameController();
+        controller.Setup(
+            field,
+            new (int, int)[] { (4, 8), (2, 0) },
+            0.8f, 1, 1,
+            players,
+            new IEnemy[] { new TestEnemy(5, 5, 1) }
+            );
+
+        Field expected0 = new Field(@"
+#########
+#.o.o.o.#
+#ooooooo#
+#.o.o.o.#
+#ooooooo#
+#.o.o.o.#
+#ooooooo#
+#.o.o.o.#
+#########
+");
+
+        string expectedOwner0 = Field.DebugOwnedMap(@"
+---------
+---------
+---------
+---------
+---------
+---------
+---------
+---------
+---------
+");
+        Assert.AreEqual(expected0.DebugField(), field.DebugField());
+        Assert.AreEqual((4, 8), players[0].Position());
+        Assert.AreEqual((2, 0), players[1].Position());
+        Assert.AreEqual(expectedOwner0, field.DebugOwnedMap());
+
+
+        inputs[0].SetState(false, false, true, false);
+        inputs[1].SetState(false, false, false, true);
+        yield return null;
+        Field expected1 = new Field(@"
+#########
+#.@.o.o.#
+#o@ooooo#
+#.o.o.o.#
+#ooooooo#
+#.o.o.o.#
+#ooo@ooo#
+#.o.@.o.#
+#########
+");
+        Assert.AreEqual(expected1.DebugField(), field.DebugField());
+        Assert.AreEqual((4, 6), players[0].Position());
+        Assert.AreEqual((2, 2), players[1].Position());
+        Assert.AreEqual(expectedOwner0, field.DebugOwnedMap());
+
+        inputs[0].SetState(true, false, false, false);
+        inputs[1].SetState(false, false, false, true);
+        yield return null;
+        Field expected2 = new Field(@"
+#########
+#.@.o.o.#
+#o@ooooo#
+#.@.o.o.#
+#o@ooooo#
+#.o.o.o.#
+#o@@@ooo#
+#.o.@.o.#
+#########
+");
+        Assert.AreEqual(expected2.DebugField(), field.DebugField());
+        Assert.AreEqual((2, 6), players[0].Position());
+        Assert.AreEqual((2, 4), players[1].Position());
+        Assert.AreEqual(expectedOwner0, field.DebugOwnedMap());
+
+        // １番目のプレイヤーが下に移動しようとするが、０番目のプレイヤーが引いている途中の線があるので進めない。
+        inputs[0].SetState(false, false, false, false);
+        inputs[1].SetState(false, false, false, true);
+        yield return null;
+
+        Assert.AreEqual(expected2.DebugField(), field.DebugField());
+        Assert.AreEqual((2, 6), players[0].Position());
+        Assert.AreEqual((2, 4), players[1].Position());
+        Assert.AreEqual(expectedOwner0, field.DebugOwnedMap());
+
+
+        inputs[0].SetState(true, false, false, false);
+        inputs[1].SetState(false, false, false, false);
+        yield return null;
+
+        Field expected3 = new Field(@"
+#########
+#.@.o.o.#
+#o@ooooo#
+#.@.o.o.#
+#o@ooooo#
+#.o.o.o.#
+#####ooo#
+#$o$#.o.#
+#########
+");
+        Assert.AreEqual(expected3.DebugField(), field.DebugField());
+        Assert.AreEqual((0, 6), players[0].Position());
+        Assert.AreEqual((2, 4), players[1].Position());
+
+        // このタイミングでプレイヤー番号0 が領地を広げる
+        string expectedOwner1 = Field.DebugOwnedMap(@"
+---------
+---------
+---------
+---------
+---------
+---------
+---------
+-0-0-----
+---------
+");
+
+        Assert.AreEqual(expectedOwner1, field.DebugOwnedMap());
+
+
+        inputs[0].SetState(false, false, false, false);
+        inputs[1].SetState(false, false, false, true);
+        yield return null;
+
+        Field expected4 = new Field(@"
+#########
+#$#.o.o.#
+#o#ooooo#
+#$#.o.o.#
+#o#ooooo#
+#$#.o.o.#
+#####ooo#
+#$o$#.o.#
+#########
+");
+        Assert.AreEqual(expected4.DebugField(), field.DebugField());
+        Assert.AreEqual((0, 6), players[0].Position());
+        Assert.AreEqual((2, 6), players[1].Position());
+
+        // このタイミングでプレイヤー番号0 が領地を広げる
+        string expectedOwner2 = Field.DebugOwnedMap(@"
+---------
+-1-------
+---------
+-1-------
+---------
+-1-------
+---------
+-0-0-----
+---------
+");
+
+        Assert.AreEqual(expectedOwner2, field.DebugOwnedMap());
     }
 
 
