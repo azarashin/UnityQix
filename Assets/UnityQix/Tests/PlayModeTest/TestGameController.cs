@@ -14,7 +14,7 @@ public class TestGameController
     public IEnumerator TestGameControllerWithEnumeratorPasses000()
     {
         Factory factory = TestCommon.Factory();
-        PlayerForTest player = (PlayerForTest)factory.GetPlayer(0);
+        Player player = factory.GetPlayer(0);
         Field field = new Field(9, 9);
         InputManagerStub input = (InputManagerStub)player.GetInput();
         GameController controller = factory.GetGameController();
