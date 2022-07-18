@@ -60,4 +60,9 @@ public class GameController : MonoBehaviour
     {
         return (float)_calc.NumberOfOccupiedPoints(_field) / (float)_calc.NumberOfAllPoints(_field) >= _quota; 
     }
+
+    public bool IsDuringTheGame()
+    {
+        return _players.Any(s => s.Units > 0);
+    }
 }
