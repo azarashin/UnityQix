@@ -346,4 +346,38 @@ public class TestGameController
         Assert.AreEqual(expected4.DebugField(), field.DebugField());
         Assert.AreEqual((4, 8), player.Position());
     }
+
+    // プレイヤーの残機がなくなり、ゲームが終了したケース
+    [UnityTest]
+    public IEnumerator TestGameControllerWithEnumeratorPasses005()
+    {
+        Factory factory = TestCommon.Factory();
+        Player player = factory.GetPlayer(0);
+        Field field = new Field(9, 9);
+
+        GameController controller = factory.GetGameController();
+        controller.Setup(
+            field,
+            new (int, int)[] { (4, 8) },
+            0.8f, 1, 1,
+            new Player[] { player },
+            new IEnemy[] { new TestEnemy(4, 8, 1) }
+            );
+
+        Assert.IsFalse(player.IsInvisible());
+        Assert.AreEqual(1, player.Lives);
+        Assert.AreEqual(1, player.Units);
+        Assert.IsTrue(controller.IsDuringTheGame());
+        yield return null;
+
+        player.Damage();
+
+        Assert.IsTrue(player.IsInvisible());
+        Assert.AreEqual(0, player.Lives);
+        Assert.AreEqual(0, player.Units);
+        Assert.IsFalse(controller.IsDuringTheGame());
+        yield return null;
+    }
+
+
 }
