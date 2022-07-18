@@ -34,94 +34,44 @@ public class Edge
                 }
                 if (x % 2 == 0)
                 {
-                    if (x > 0 && x < field.Width() - 1)
+                    bool a = field.AreaType(x - 1, y) == EnumBlockType.FreeArea;
+                    bool b = field.AreaType(x + 1, y) == EnumBlockType.FreeArea;
+                    if (field.AreaType(x, y) == EnumBlockType.NoLine)
                     {
-                        bool a = field.AreaType(x - 1, y) == EnumBlockType.FreeArea;
-                        bool b = field.AreaType(x + 1, y) == EnumBlockType.FreeArea;
-                        if (field.AreaType(x, y) == EnumBlockType.NoLine)
-                        {
-                            _edge[x, y] = EnumEdgeType.None;
-                        }
-                        else if (a && b)
-                        {
-                            _edge[x, y] = EnumEdgeType.Line;
-                        }
-                        else if (!a && !b)
-                        {
-                            _edge[x, y] = EnumEdgeType.Filled;
-                        }
-                        else
-                        {
-                            _edge[x, y] = EnumEdgeType.Edge;
-                        }
+                        _edge[x, y] = EnumEdgeType.None;
                     }
-                    else if (x == 0)
+                    else if (a && b)
                     {
-                        if (field.AreaType(x + 1, y) == EnumBlockType.FreeArea)
-                        {
-                            _edge[x, y] = EnumEdgeType.Edge;
-                        }
-                        else
-                        {
-                            _edge[x, y] = EnumEdgeType.Filled;
-                        }
+                        _edge[x, y] = EnumEdgeType.Line;
                     }
-                    else if (x == field.Width() - 1)
+                    else if (!a && !b)
                     {
-                        if (field.AreaType(x - 1, y) == EnumBlockType.FreeArea)
-                        {
-                            _edge[x, y] = EnumEdgeType.Edge;
-                        }
-                        else
-                        {
-                            _edge[x, y] = EnumEdgeType.Filled;
-                        }
+                        _edge[x, y] = EnumEdgeType.Filled;
+                    }
+                    else
+                    {
+                        _edge[x, y] = EnumEdgeType.Edge;
                     }
                 }
                 if (y % 2 == 0)
                 {
-                    if (y > 0 && y < field.Height() - 1)
+                    bool a = field.AreaType(x, y - 1) == EnumBlockType.FreeArea;
+                    bool b = field.AreaType(x, y + 1) == EnumBlockType.FreeArea;
+                    if (field.AreaType(x, y) == EnumBlockType.NoLine)
                     {
-                        bool a = field.AreaType(x, y - 1) == EnumBlockType.FreeArea;
-                        bool b = field.AreaType(x, y + 1) == EnumBlockType.FreeArea;
-                        if (field.AreaType(x, y) == EnumBlockType.NoLine)
-                        {
-                            _edge[x, y] = EnumEdgeType.None;
-                        }
-                        else if (a && b)
-                        {
-                            _edge[x, y] = EnumEdgeType.Line;
-                        }
-                        else if (!a && !b)
-                        {
-                            _edge[x, y] = EnumEdgeType.Filled;
-                        }
-                        else
-                        {
-                            _edge[x, y] = EnumEdgeType.Edge;
-                        }
+                        _edge[x, y] = EnumEdgeType.None;
                     }
-                    else if (y == 0)
+                    else if (a && b)
                     {
-                        if (field.AreaType(x, y + 1) == EnumBlockType.FreeArea)
-                        {
-                            _edge[x, y] = EnumEdgeType.Edge;
-                        }
-                        else
-                        {
-                            _edge[x, y] = EnumEdgeType.Filled;
-                        }
+                        _edge[x, y] = EnumEdgeType.Line;
                     }
-                    else if (y == field.Height() - 1)
+                    else if (!a && !b)
                     {
-                        if (field.AreaType(x, y - 1) == EnumBlockType.FreeArea)
-                        {
-                            _edge[x, y] = EnumEdgeType.Edge;
-                        }
-                        else
-                        {
-                            _edge[x, y] = EnumEdgeType.Filled;
-                        }
+                        _edge[x, y] = EnumEdgeType.Filled;
+                    }
+                    else
+                    {
+                        _edge[x, y] = EnumEdgeType.Edge;
                     }
                 }
             }

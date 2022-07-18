@@ -173,6 +173,14 @@ public class Field
     /// <returns>エリアの種別</returns>
     public EnumBlockType AreaType(int x, int y)
     {
+        if(x < 0 || x >= Width() || y < 0 || y >= Height())
+        {
+            if(Mathf.Abs(x) % 2 == 0 || Mathf.Abs(y) % 2 == 0)
+            {
+                return EnumBlockType.NoLine; 
+            }
+            return EnumBlockType.OccupiedArea; 
+        }
         return _field[x, y];
     }
 
