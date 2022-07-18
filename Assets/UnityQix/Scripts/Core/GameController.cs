@@ -13,7 +13,7 @@ public class GameController : MonoBehaviour
 
     public void Setup(Field field, (int x, int y)[] initialPositions, float quota, int lives, int units, Player[] players, IEnemy[] enemies)
     {
-        _calc = new AreaCalculator();
+        _calc = new AreaCalculator(enemies);
 
         _field = field; 
         _players = players; 
@@ -37,7 +37,6 @@ public class GameController : MonoBehaviour
             Debug.LogWarning("GameController.LateUpdate: GameController is not setup.");
             return; 
         }
-        _calc.UpdateField(_field, _enemies.Select(s => s.LogicalPosition()).ToArray());
         foreach(Player player in _players)
         {
             IEnemy[] nears = _enemies

@@ -111,7 +111,7 @@ public abstract class Player : MonoBehaviour
                     _field.SetAreaType(_pX, _pY, EnumBlockType.NoLine);
                     _field.SetAreaType((_pX + px2) / 2, (_pY + py2) / 2, EnumBlockType.NoLine);
                 }
-                _calc.UpdateField(_field, new (int, int)[] { (5, 5) });
+                _calc.UpdateField(_field, _id);
                 _pX = px2;
                 _pY = py2;
                 yield return CoMoveTo(ox, oy, _pX, _pY);

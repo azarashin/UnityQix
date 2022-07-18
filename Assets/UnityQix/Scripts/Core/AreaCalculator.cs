@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class AreaCalculator
 {
+    private IEnemy[] _enemies;
+    public AreaCalculator(IEnemy[] enemies)
+    {
+        _enemies = enemies; 
+    }
+
     /// <summary>
     /// フィールドの面積を求める
     /// </summary>
@@ -36,8 +42,11 @@ public class AreaCalculator
     /// </summary>
     /// <param name="field">フィールド</param>
     /// <param name="targets"></param>
-    public void UpdateField(Field field, (int X, int Y)[] targets)
+    public void UpdateField(Field field, int owner)
     {
+        (int X, int Y)[] targets = _enemies
+            .Select(s => s.LogicalPosition())
+            .ToArray();
         EnumBlockType[,] newField = field.Copy();
         Field ret = null;
         for (int y = 1; y < field.Height(); y += 2)

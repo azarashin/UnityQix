@@ -21,7 +21,7 @@ public class TestAreaCalculator
 #.o.o.#
 #######
 ");
-        AreaCalculator calc = new AreaCalculator();
+        AreaCalculator calc = new AreaCalculator(new IEnemy[] { new TestEnemy(5, 7, 1) });
         Assert.AreEqual(6, calc.NumberOfAllPoints(field)); 
     }
 
@@ -39,7 +39,7 @@ public class TestAreaCalculator
 #$o$@.#
 #######
 ");
-        AreaCalculator calc = new AreaCalculator();
+        AreaCalculator calc = new AreaCalculator(new IEnemy[] { new TestEnemy(5, 7, 1) });
         Assert.AreEqual(6, calc.NumberOfAllPoints(field));
         Assert.AreEqual(4, calc.NumberOfOccupiedPoints(field));
     }
@@ -67,8 +67,8 @@ public class TestAreaCalculator
 ";
         Field field = new Field(src);
         Field exField = new Field(expected);
-        AreaCalculator calc = new AreaCalculator();
-        calc.UpdateField(field, new (int X, int Y)[] { (1, 1)});
+        AreaCalculator calc = new AreaCalculator(new IEnemy[] { new TestEnemy(1, 1, 1) });
+        calc.UpdateField(field, 0);
         Assert.AreEqual(6, calc.NumberOfAllPoints(field));
         Assert.AreEqual(0, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
@@ -97,8 +97,8 @@ public class TestAreaCalculator
 ";
         Field field = new Field(src);
         Field exField = new Field(expected);
-        AreaCalculator calc = new AreaCalculator();
-        calc.UpdateField(field, new (int X, int Y)[] { (1, 1) });
+        AreaCalculator calc = new AreaCalculator(new IEnemy[] { new TestEnemy(1, 1, 1) });
+        calc.UpdateField(field, 0);
         Assert.AreEqual(6, calc.NumberOfAllPoints(field));
         Assert.AreEqual(5, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
@@ -127,8 +127,8 @@ public class TestAreaCalculator
 ";
         Field field = new Field(src);
         Field exField = new Field(expected);
-        AreaCalculator calc = new AreaCalculator();
-        calc.UpdateField(field, new (int X, int Y)[] { (5, 3) });
+        AreaCalculator calc = new AreaCalculator(new IEnemy[] { new TestEnemy(5, 3, 1)});
+        calc.UpdateField(field, 0);
         Assert.AreEqual(6, calc.NumberOfAllPoints(field));
         Assert.AreEqual(1, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
@@ -169,8 +169,8 @@ public class TestAreaCalculator
 ";
         Field field = new Field(src);
         Field exField = new Field(expected);
-        AreaCalculator calc = new AreaCalculator();
-        calc.UpdateField(field, new (int X, int Y)[] { (1, 1) });
+        AreaCalculator calc = new AreaCalculator(new IEnemy[] { new TestEnemy(1, 1, 1)});
+        calc.UpdateField(field, 0);
         Assert.AreEqual(25, calc.NumberOfAllPoints(field));
         Assert.AreEqual(13, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
@@ -210,8 +210,8 @@ public class TestAreaCalculator
 ";
         Field field = new Field(src);
         Field exField = new Field(expected);
-        AreaCalculator calc = new AreaCalculator();
-        calc.UpdateField(field, new (int X, int Y)[] { (5, 7) });
+        AreaCalculator calc = new AreaCalculator(new IEnemy[] { new TestEnemy(5, 7, 1)});
+        calc.UpdateField(field, 0);
         Assert.AreEqual(25, calc.NumberOfAllPoints(field));
         Assert.AreEqual(13, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
@@ -252,8 +252,8 @@ public class TestAreaCalculator
 ";
         Field field = new Field(src);
         Field exField = new Field(expected);
-        AreaCalculator calc = new AreaCalculator();
-        calc.UpdateField(field, new (int X, int Y)[] { (1, 3) });
+        AreaCalculator calc = new AreaCalculator(new IEnemy[] { new TestEnemy(1, 3, 1)});
+        calc.UpdateField(field, 0);
         Assert.AreEqual(25, calc.NumberOfAllPoints(field));
         Assert.AreEqual(12, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
@@ -294,8 +294,8 @@ public class TestAreaCalculator
 ";
         Field field = new Field(src);
         Field exField = new Field(expected);
-        AreaCalculator calc = new AreaCalculator();
-        calc.UpdateField(field, new (int X, int Y)[] { (9, 7) });
+        AreaCalculator calc = new AreaCalculator(new IEnemy[] { new TestEnemy(9, 7, 1)});
+        calc.UpdateField(field, 0);
         Assert.AreEqual(25, calc.NumberOfAllPoints(field));
         Assert.AreEqual(12, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
@@ -348,8 +348,8 @@ public class TestAreaCalculator
 ";
         Field field = new Field(src);
         Field exField = new Field(expected);
-        AreaCalculator calc = new AreaCalculator();
-        calc.UpdateField(field, new (int X, int Y)[] { (1, 1) });
+        AreaCalculator calc = new AreaCalculator(new IEnemy[] { new TestEnemy(1, 1, 1)});
+        calc.UpdateField(field, 0);
         Assert.AreEqual(72, calc.NumberOfAllPoints(field));
         Assert.AreEqual(29, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
@@ -402,8 +402,8 @@ public class TestAreaCalculator
 ";
         Field field = new Field(src);
         Field exField = new Field(expected);
-        AreaCalculator calc = new AreaCalculator();
-        calc.UpdateField(field, new (int X, int Y)[] { (5, 9) });
+        AreaCalculator calc = new AreaCalculator(new IEnemy[] { new TestEnemy(5, 9, 1)});
+        calc.UpdateField(field, 0);
         Assert.AreEqual(72, calc.NumberOfAllPoints(field));
         Assert.AreEqual(29, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
@@ -456,8 +456,8 @@ public class TestAreaCalculator
 ";
         Field field = new Field(src);
         Field exField = new Field(expected);
-        AreaCalculator calc = new AreaCalculator();
-        calc.UpdateField(field, new (int X, int Y)[] { (1, 3) });
+        AreaCalculator calc = new AreaCalculator(new IEnemy[] { new TestEnemy(1, 3, 1)});
+        calc.UpdateField(field, 0);
         Assert.AreEqual(72, calc.NumberOfAllPoints(field));
         Assert.AreEqual(43, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
@@ -510,8 +510,8 @@ public class TestAreaCalculator
 ";
         Field field = new Field(src);
         Field exField = new Field(expected);
-        AreaCalculator calc = new AreaCalculator();
-        calc.UpdateField(field, new (int X, int Y)[] { (9, 9) });
+        AreaCalculator calc = new AreaCalculator(new IEnemy[] { new TestEnemy(9, 9, 1)});
+        calc.UpdateField(field, 0);
         Assert.AreEqual(72, calc.NumberOfAllPoints(field));
         Assert.AreEqual(43, calc.NumberOfOccupiedPoints(field));
         Assert.AreEqual(exField.DebugField(), field.DebugField());
