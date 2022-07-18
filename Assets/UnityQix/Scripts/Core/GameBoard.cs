@@ -27,12 +27,9 @@ public abstract class GameBoard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // 実装はこれからやる
         _field = _fieldFactory.GenerateField(_stage);
-        for(int i=0;i<_players.Length;i++)
-        {
-            (int px, int py) = _fieldFactory.GetInitialPosition(_stage, i);
-            _players[i].Setup(_field, px, py, _lives, _units);
-        }
+
     }
 
     // Update is called once per frame
