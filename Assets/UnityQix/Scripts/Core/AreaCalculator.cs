@@ -42,7 +42,7 @@ public class AreaCalculator
     /// </summary>
     /// <param name="field">フィールド</param>
     /// <param name="targets"></param>
-    public void UpdateField(Field field, int owner)
+    public void UpdateField(Field field, int owner, int score)
     {
         (int X, int Y)[] targets = _enemies
             .Select(s => s.LogicalPosition())
@@ -61,7 +61,7 @@ public class AreaCalculator
         {
             Fill(newField, target);
         }
-        field.UpdateField(previous, newField, owner);
+        field.UpdateField(previous, newField, owner, score);
     }
 
     private void JudgeLineBackTrace(EnumBlockType[,] field)

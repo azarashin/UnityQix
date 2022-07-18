@@ -381,7 +381,7 @@ public class TestGameController
     }
 
     /// <summary>
-    /// 占有していく経緯の確認(複数プレイヤー)
+    /// 占有していく経緯の確認(複数プレイヤー、スコア変化)
     /// </summary>
     /// <returns></returns>
     [UnityTest]
@@ -401,6 +401,12 @@ public class TestGameController
             players,
             new IEnemy[] { new TestEnemy(5, 5, 1) }
             );
+
+        // 試験の前提を確認する
+        Assert.AreEqual(1, players[0].ScoreAbility(false));
+        Assert.AreEqual(2, players[0].ScoreAbility(true));
+        Assert.AreEqual(1, players[1].ScoreAbility(false));
+        Assert.AreEqual(2, players[1].ScoreAbility(true));
 
         Field expected0 = new Field(@"
 #########
@@ -425,14 +431,28 @@ public class TestGameController
 ---------
 ---------
 ");
+
+        string expectedScore0 = Field.DebugScoreMap(@"
+000000000
+000000000
+000000000
+000000000
+000000000
+000000000
+000000000
+000000000
+000000000
+");
         Assert.AreEqual(expected0.DebugField(), field.DebugField());
         Assert.AreEqual((4, 8), players[0].Position());
         Assert.AreEqual((2, 0), players[1].Position());
         Assert.AreEqual(expectedOwner0, field.DebugOwnedMap());
+        Assert.AreEqual(expectedScore0, field.DebugScoreMap());
 
 
         inputs[0].SetState(false, false, true, false);
         inputs[1].SetState(false, false, false, true);
+        inputs[1].SetSlowMode(true); // 動き始めの状態がスコアに反映される。
         yield return null;
         Field expected1 = new Field(@"
 #########
@@ -449,9 +469,12 @@ public class TestGameController
         Assert.AreEqual((4, 6), players[0].Position());
         Assert.AreEqual((2, 2), players[1].Position());
         Assert.AreEqual(expectedOwner0, field.DebugOwnedMap());
+        Assert.AreEqual(expectedScore0, field.DebugScoreMap());
 
         inputs[0].SetState(true, false, false, false);
         inputs[1].SetState(false, false, false, true);
+        inputs[0].SetSlowMode(true); // 動き始めの状態でなければスコアには反映されない。
+        inputs[1].SetSlowMode(false); // 動き始めの状態でなければスコアには反映されない
         yield return null;
         Field expected2 = new Field(@"
 #########
@@ -468,6 +491,7 @@ public class TestGameController
         Assert.AreEqual((2, 6), players[0].Position());
         Assert.AreEqual((2, 4), players[1].Position());
         Assert.AreEqual(expectedOwner0, field.DebugOwnedMap());
+        Assert.AreEqual(expectedScore0, field.DebugScoreMap());
 
         // １番目のプレイヤーが下に移動しようとするが、０番目のプレイヤーが引いている途中の線があるので進めない。
         inputs[0].SetState(false, false, false, false);
@@ -478,6 +502,7 @@ public class TestGameController
         Assert.AreEqual((2, 6), players[0].Position());
         Assert.AreEqual((2, 4), players[1].Position());
         Assert.AreEqual(expectedOwner0, field.DebugOwnedMap());
+        Assert.AreEqual(expectedScore0, field.DebugScoreMap());
 
 
         inputs[0].SetState(true, false, false, false);
@@ -511,8 +536,20 @@ public class TestGameController
 -0-0-----
 ---------
 ");
+        string expectedScore1 = Field.DebugScoreMap(@"
+000000000
+000000000
+000000000
+000000000
+000000000
+000000000
+000000000
+010100000
+000000000
+");
 
         Assert.AreEqual(expectedOwner1, field.DebugOwnedMap());
+        Assert.AreEqual(expectedScore1, field.DebugScoreMap());
 
 
         inputs[0].SetState(false, false, false, false);
@@ -546,8 +583,20 @@ public class TestGameController
 -0-0-----
 ---------
 ");
+        string expectedScore2 = Field.DebugScoreMap(@"
+000000000
+020000000
+000000000
+020000000
+000000000
+020000000
+000000000
+010100000
+000000000
+");
 
         Assert.AreEqual(expectedOwner2, field.DebugOwnedMap());
+        Assert.AreEqual(expectedScore2, field.DebugScoreMap());
     }
 
 

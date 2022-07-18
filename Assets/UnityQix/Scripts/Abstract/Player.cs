@@ -8,6 +8,12 @@ public abstract class Player : MonoBehaviour
     [SerializeField]
     bool _acceptToMoveOnLine = false;
 
+    [SerializeField]
+    int _normalScore = 1;
+
+    [SerializeField]
+    int _slowScore = 2; 
+
     private IInputManager _input;
     private Field _field;
     private AreaCalculator _calc;
@@ -22,6 +28,7 @@ public abstract class Player : MonoBehaviour
     private bool _rebornTrigger = false; 
 
     private bool _onBase;
+    private bool _slowMode = false; 
 
     /// <summary>
     /// 移動するときの経過処理。移動経過中は移動入力を受け付けない。
@@ -100,10 +107,12 @@ public abstract class Player : MonoBehaviour
                 EnumBlockType frontStep = _field.AreaType(px2, py2);
                 if(front == EnumBlockType.NoLine && frontStep == EnumBlockType.NoLine)
                 {
+                    SetSlowMode(_pX, _pY); 
                     _field.SetAreaType((_pX + px2) / 2, (_pY + py2) / 2, EnumBlockType.OnLineDrawing);
                     _field.SetAreaType(px2, py2, EnumBlockType.OnLineDrawing);
                 } else if (front == EnumBlockType.NoLine && frontStep == EnumBlockType.OnLine)
                 {
+                    SetSlowMode(_pX, _pY);
                     _field.SetAreaType((_pX + px2) / 2, (_pY + py2) / 2, EnumBlockType.OnLineDrawing);
                     _field.SetAreaType(px2, py2, EnumBlockType.ConnectedPoint);
                 } else if (front == EnumBlockType.OnLineDrawing)
@@ -111,7 +120,8 @@ public abstract class Player : MonoBehaviour
                     _field.SetAreaType(_pX, _pY, EnumBlockType.NoLine);
                     _field.SetAreaType((_pX + px2) / 2, (_pY + py2) / 2, EnumBlockType.NoLine);
                 }
-                _calc.UpdateField(_field, _id);
+                int score = _slowMode ? _slowScore : _normalScore;
+                _calc.UpdateField(_field, _id, score);
                 _pX = px2;
                 _pY = py2;
                 yield return CoMoveTo(ox, oy, _pX, _pY);
@@ -133,6 +143,14 @@ public abstract class Player : MonoBehaviour
             }
         }
 
+    }
+
+    private void SetSlowMode(int x, int y)
+    {
+        if(_field.AreaType(x, y) == EnumBlockType.OnLine)
+        {
+            _slowMode = _input.IsSlow();
+        }
     }
 
     internal void Setup(Field field, int x, int y, AreaCalculator calc, int lives, int units, int id, bool acceptToMoveOnLine = false)
@@ -218,5 +236,10 @@ public abstract class Player : MonoBehaviour
     public bool IsInvisible()
     {
         return (_invisibleTime > 0.0f || _units == 0 || _rebornTrigger || _deadTrigger);
+    }
+
+    public int ScoreAbility(bool slow)
+    {
+        return slow ? _slowScore : _normalScore; 
     }
 }

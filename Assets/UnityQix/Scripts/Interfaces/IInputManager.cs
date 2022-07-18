@@ -8,4 +8,5 @@ public interface IInputManager
     public bool IsRight();
     public bool IsUp();
     public bool IsDown();
+    public bool IsSlow();
 }

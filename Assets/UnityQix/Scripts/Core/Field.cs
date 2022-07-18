@@ -107,7 +107,7 @@ public class Field
         }
     }
 
-    internal void UpdateField(EnumBlockType[,] previous, EnumBlockType[,] newField, int owner)
+    internal void UpdateField(EnumBlockType[,] previous, EnumBlockType[,] newField, int owner, int score)
     {
         if (_field.GetLength(0) != previous.GetLength(0) || _field.GetLength(1) != previous.GetLength(1))
         {
@@ -126,6 +126,7 @@ public class Field
                 if (previous[x, y] == EnumBlockType.FreeArea && newField[x, y] == EnumBlockType.OccupiedArea)
                 {
                     _ownerMap[x, y] = owner;
+                    _scoreMap[x, y] = score;
                 }
             }
         }
@@ -171,6 +172,7 @@ public class Field
             }
         }
         ResetOwnerMap(width, height);
+        ResetScoreMap(width, height);
     }
 
     public Field(EnumBlockType[,] field)
@@ -279,6 +281,30 @@ public class Field
                 .Replace("\n", "\r\n")
                 .Trim() + "\r\n";
         return ret; 
+    }
+
+    public string DebugScoreMap()
+    {
+        string ret = "";
+        for (int y = 0; y < Height(); y++)
+        {
+            for (int x = 0; x < Width(); x++)
+            {
+                ret += $"{_scoreMap[x, y]:X}";
+            }
+            ret += "\r\n";
+        }
+        return ret;
+    }
+
+    public static string DebugScoreMap(string src)
+    {
+        string ret = src
+                .Replace("\r", "\n")
+                .Replace("\n\n", "\n")
+                .Replace("\n", "\r\n")
+                .Trim() + "\r\n";
+        return ret;
     }
 
     /// <summary>

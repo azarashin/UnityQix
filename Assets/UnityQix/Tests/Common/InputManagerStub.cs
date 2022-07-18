@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InputManagerStub : IInputManager
 {
-    bool _left, _right, _up, _down;
+    bool _left, _right, _up, _down, _slow;
 
     public bool IsDown()
     {
@@ -13,17 +13,22 @@ public class InputManagerStub : IInputManager
 
     public bool IsLeft()
     {
-        return _left; 
+        return _left;
     }
 
     public bool IsRight()
     {
-        return _right; 
+        return _right;
     }
 
     public bool IsUp()
     {
-        return _up; 
+        return _up;
+    }
+
+    public bool IsSlow()
+    {
+        return _slow;
     }
 
 
@@ -32,7 +37,12 @@ public class InputManagerStub : IInputManager
         _left = left;
         _right = right;
         _up = up;
-        _down = down; 
+        _down = down;
+    }
+
+    public void SetSlowMode(bool slow)
+    {
+        _slow = slow;
     }
 
 }
