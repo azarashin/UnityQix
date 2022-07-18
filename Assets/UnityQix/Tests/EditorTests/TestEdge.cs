@@ -33,7 +33,7 @@ public class TestEdge
 ###################
 ";
 
-        string expected = @"
+        string expected = Edge.DebugEdge(@"
 ###################
 #...............#.#
 *****************##
@@ -51,7 +51,7 @@ public class TestEdge
 *+++++***********##
 *.+...*.#.......#.#
 *******############
-";
+");
         expected = expected.Trim();
         Field field = new Field(src);
         string edge = new Edge(field).DebugEdge().Trim();
