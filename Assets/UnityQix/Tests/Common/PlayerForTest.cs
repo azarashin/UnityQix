@@ -14,6 +14,7 @@ public class PlayerForTest : Player
         _input = new InputManagerStub();
         Px = -1;
         Py = -1;
+
     }
 
     public override IInputManager GetInput()
@@ -27,6 +28,18 @@ public class PlayerForTest : Player
         Py = y; 
         yield return null; 
     }
+
+    public override float InivsibleTime()
+    {
+        return 1.0f;
+    }
+
+    protected override IEnumerator CoDamagedThenDisappear()
+    {
+        yield return null;
+    }
+
+    protected override IEnumerator CoDamagedThenReborn()
     {
         yield return null;
     }

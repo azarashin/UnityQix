@@ -16,6 +16,9 @@ public abstract class Player : MonoBehaviour
     private int _lives;
     private int _units;
     private int _initialLives;
+    private float _invisibleTime;
+    private bool _deadTrigger = false;
+    private bool _rebornTrigger = false; 
 
     private bool _onBase;
 
@@ -28,6 +31,25 @@ public abstract class Player : MonoBehaviour
     /// <param name="y">移動先y座標</param>
     /// <returns></returns>
     protected abstract IEnumerator CoMoveTo(int ox, int oy, int x, int y);
+
+    /// <summary>
+    /// ダメージを受けた後の無敵時間(秒)
+    /// </summary>
+    /// <returns>無敵時間(秒)</returns>
+    public abstract float InivsibleTime();
+
+    /// <summary>
+    /// ライフがゼロになって残機を減らし、再出場する時の処理。この処理の間入力を受け付けない。
+    /// </summary>
+    /// <returns></returns>
+    protected abstract IEnumerator CoDamagedThenReborn();
+
+    /// <summary>
+    /// ライフがゼロになって残機を減らし、残機がゼロになった時の処理。この処理の間入力を受け付けない。
+    /// </summary>
+    /// <returns></returns>
+    protected abstract IEnumerator CoDamagedThenDisappear();
+
     /// <summary>
     /// 入力を受け付けるためのIInputManager クラスのインスタンスを取得する
     /// </summary>
@@ -73,8 +95,21 @@ public abstract class Player : MonoBehaviour
             {
                 int ox = _pX;
                 int oy = _pY;
-                _field.SetAreaType((_pX + px2) / 2, (_pY + py2) / 2, EnumBlockType.OnLine);
-                _field.SetAreaType(px2, py2, EnumBlockType.OnLine);
+                EnumBlockType front = _field.AreaType((_pX + px2) / 2, (_pY + py2) / 2);
+                EnumBlockType frontStep = _field.AreaType(px2, py2);
+                if(front == EnumBlockType.NoLine && frontStep == EnumBlockType.NoLine)
+                {
+                    _field.SetAreaType((_pX + px2) / 2, (_pY + py2) / 2, EnumBlockType.OnLineDrawing);
+                    _field.SetAreaType(px2, py2, EnumBlockType.OnLineDrawing);
+                } else if (front == EnumBlockType.NoLine && frontStep == EnumBlockType.OnLine)
+                {
+                    _field.SetAreaType((_pX + px2) / 2, (_pY + py2) / 2, EnumBlockType.OnLineDrawing);
+                    _field.SetAreaType(px2, py2, EnumBlockType.ConnectedPoint);
+                } else if (front == EnumBlockType.OnLineDrawing)
+                {
+                    _field.SetAreaType(_pX, _pY, EnumBlockType.NoLine);
+                    _field.SetAreaType((_pX + px2) / 2, (_pY + py2) / 2, EnumBlockType.NoLine);
+                }
                 _calc.UpdateField(_field, new (int, int)[] { (5, 5) });
                 _pX = px2;
                 _pY = py2;
@@ -84,11 +119,22 @@ public abstract class Player : MonoBehaviour
             {
                 yield return null;
             }
+            if(_deadTrigger)
+            {
+                yield return CoDamagedThenDisappear();
+                _deadTrigger = false;
+
+            }
+            if(_rebornTrigger)
+            {
+                yield return CoDamagedThenReborn();
+                _rebornTrigger = false; 
+            }
         }
 
     }
 
-    public void Setup(Field field, int x, int y)
+    public void Setup(Field field, int x, int y, int lives, int units)
     {
         _input = GetInput();
 
@@ -99,6 +145,8 @@ public abstract class Player : MonoBehaviour
         _pos = new PositionUpdater(_field);
         _initialLives = _lives = lives;
         _units = units;
+        _invisibleTime = 0.0f; 
+        _deadTrigger = false;
 
         Edge edge = new Edge(_field);
         if (edge.EdgeType(_pX, _pY) != EnumEdgeType.Edge)
@@ -118,5 +166,56 @@ public abstract class Player : MonoBehaviour
     public int Radius()
     {
         return 1; // プレイヤーの半径は固定
+    }
+
+    public void Damage()
+    {
+        if(_lives <= 0 || _units <= 0)
+        {
+            return; 
+        }
+        if(IsInvisible())
+        {
+            return; 
+        }
+        _lives--;
+        if(_lives <= 0)
+        {
+            _units--;
+            if(_units <= 0)
+            {
+                _deadTrigger = true; 
+            }
+            else
+            {
+                _rebornTrigger = true; 
+                _lives = _initialLives;
+            }
+        }
+        else
+        {
+            _invisibleTime = InivsibleTime();
+        }
+    }
+
+    public int Lives
+    {
+        get
+        {
+            return _lives; 
+        }
+    }
+
+    public int Units
+    {
+        get
+        {
+            return _units; 
+        }
+    }
+
+    public bool IsInvisible()
+    {
+        return (_invisibleTime > 0.0f || _units == 0 || _rebornTrigger || _deadTrigger);
     }
 }
