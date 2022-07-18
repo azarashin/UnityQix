@@ -28,6 +28,10 @@ public abstract class Player : MonoBehaviour
     /// <param name="y">移動先y座標</param>
     /// <returns></returns>
     protected abstract IEnumerator CoMoveTo(int ox, int oy, int x, int y);
+    /// <summary>
+    /// 入力を受け付けるためのIInputManager クラスのインスタンスを取得する
+    /// </summary>
+    /// <returns>IInputManager クラスのインスタンス</returns>
     public abstract IInputManager GetInput();
 
     private void Start()
