@@ -135,7 +135,7 @@ public abstract class Player : MonoBehaviour
 
     }
 
-    internal void Setup(Field field, int x, int y, AreaCalculator calc, int lives, int units, int id)
+    internal void Setup(Field field, int x, int y, AreaCalculator calc, int lives, int units, int id, bool acceptToMoveOnLine = false)
     {
         _input = GetInput();
 
@@ -150,10 +150,9 @@ public abstract class Player : MonoBehaviour
         _invisibleTime = 0.0f; 
         _deadTrigger = false;
 
-        Edge edge = new Edge(_field);
-        if (edge.EdgeType(_pX, _pY) != EnumEdgeType.Edge)
+        if (!_pos.IsMovablePointWithLightAlgorithm(x, y, acceptToMoveOnLine))
         {
-            Debug.LogError($"Player must be in edge({_pX}, {_pY})");
+            Debug.LogError($"Player must be movable({_pX}, {_pY})");
             throw new ArgumentException();
         }
 
