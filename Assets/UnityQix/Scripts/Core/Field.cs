@@ -299,6 +299,18 @@ public class Field
     {
         return (Height() - 1) / 2;
     }
+
+    /// <summary>
+    /// どのプレイヤーが所有している領域かを調べる。-1 の場合はどのプレイヤーも所有していない。
+    /// </summary>
+    /// <param name="x">0 <= x < AreaWidth()</param>
+    /// <param name="y">0 <= y < AreaHeight()</param>
+    /// <returns></returns>
+    public int Owner(int x, int y)
+    {
+        return _ownerMap[x * 2 + 1, y * 2 + 1];
+    }
+
     /// <summary>
     /// プレイヤーが所有している領域のスコアを調べる。
     /// </summary>
