@@ -59,7 +59,6 @@ C...................C
 ";
         expected = expected.Trim();
         Edge edge = new Edge(src);
-        AreaCalculator calc = new AreaCalculator();
         string line = new Line(edge).DebugLine().Trim();
         Debug.Log(line + "\n\n" + expected);
         Assert.AreEqual(expected, line);

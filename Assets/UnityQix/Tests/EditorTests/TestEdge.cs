@@ -54,7 +54,6 @@ public class TestEdge
 ";
         expected = expected.Trim();
         Field field = new Field(src);
-        AreaCalculator calc = new AreaCalculator();
         string edge = new Edge(field).DebugEdge().Trim();
         Assert.AreEqual(expected, edge);
 
