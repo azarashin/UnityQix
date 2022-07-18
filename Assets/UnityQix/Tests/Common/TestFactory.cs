@@ -5,7 +5,7 @@ using UnityEngine;
 public class TestFactory : Factory
 {
     [SerializeField]
-    PlayerForTest _player;
+    PlayerForTest[] _players;
 
     public override int GetNumberOfPlayers()
     {
@@ -14,6 +14,6 @@ public class TestFactory : Factory
 
     public override Player GetPlayer(int index)
     {
-        return _player;
+        return _players[index];
     }
 }
